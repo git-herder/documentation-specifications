@@ -45,7 +45,7 @@ specifications/
 | ---- | ---- | ------ |
 | Глобальные флаги CLI, приоритет конфигурации, общие коды завершения | [cli/index.md](cli/index.md) | актуально |
 | Контракт команды `<name>` | `cli/<name>/index.md` | по мере появления команд |
-| Журнал выполнения, JSON, sinks, redaction | `platform/logging.md` | **planned** (вне текущих спек) |
+| Журнал выполнения, JSON, sinks, redaction | [platform/logging.md](platform/logging.md) | актуально |
 | Профили, env, слияние конфигурации | `platform/config.md` | planned |
 
 Не дублируйте таблицы глобальных флагов и инварианты платформы вне SSOT —

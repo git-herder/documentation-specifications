@@ -108,8 +108,9 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 
 ### `--debug`
 
-С `-D` в журнал попадают записи уровня debug (вход и выход процедур и функций) и при
-ошибках запись error со stack trace; детали уровней — [platform/logging.md](../platform/logging.md).
+С `-D` в журнал попадают записи уровня debug (вход и выход на архитектурных границах) и
+при ошибках запись error со stack trace; детали уровней и границ —
+[platform/logging.md](../platform/logging.md).
 
 ### `-V` и `-D` вместе
 

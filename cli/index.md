@@ -2,13 +2,13 @@
 
 Общие флаги `githerd` для всего дерева команд. Подкоманды их наследуют.
 
-Другие имена бинарника — в [замысле продукта][product-intent-readme]. В спеках
+Другие имена бинарника — в [замысле продукта](../../product-intent/README.md). В спеках
 команд таблицу ниже не копируют, только ссылку на этот файл.
 
 ## Назначение
 
 Один набор флагов для справки, версии, логов, обработки ошибок, каталога
-workspace и **подключения к [SCM][SCM-PLATFORM-TERM]** (`upstream`, `host`, `token`)
+workspace и **подключения к [SCM](../../../glossary/terms/scm-platform.md)** (`upstream`, `host`, `token`)
 для команд, обращающихся к API платформы. Если команде флаг не нужен — это пишут
 в её спеке.
 
@@ -18,12 +18,12 @@ workspace и **подключения к [SCM][SCM-PLATFORM-TERM]** (`upstream`,
 githerd [глобальные опции] <команда> [опции команды] [аргументы]
 ```
 
-Глобальные опции действуют на всех уровнях команд ([Cobra][ADR-26101701]).
+Глобальные опции действуют на всех уровнях команд ([Cobra](../../../ADR/ADR-26101701-go-application-stack.md)).
 Длинная и короткая форма равнозначны.
 
 ## Синтаксис опций
 
-Разбор аргументов — [Cobra][ADR-26101701] и [pflag](https://github.com/spf13/pflag).
+Разбор аргументов — [Cobra](../../../ADR/ADR-26101701-go-application-stack.md) и [pflag](https://github.com/spf13/pflag).
 Длинные имена только с `--` (`--workspace`), короткие — с одним `-` (`-w`). Для
 опции **со значением** допускаются обе записи: `--on-error continue` и
 `--on-error=continue`; то же для короткой формы (`-e continue`, `-e=continue`).
@@ -32,10 +32,10 @@ githerd [глобальные опции] <команда> [опции кома�
 явное выключение — `--verbose=false`. Форму `--verbose true` не используем потому,
 что слово после boolean может уйти в позиционные аргументы.
 
-**Разделитель `--`:** всё после `--` — не опции, а аргументы команды (пути и
+**Разделитель** `--`**:** всё после `--` — не опции, а аргументы команды (пути и
 имена, начинающиеся с `-`).
 
-**Отрицательные числа и значения с `-`:** для целых и путей предпочитаем
+**Отрицательные числа и значения с** `-`**:** для целых и путей предпочитаем
 `--retries-number=0` или аргументы после `--`; иначе `-1` может быть принят за
 флаг.
 
@@ -48,19 +48,19 @@ githerd [глобальные опции] <команда> [опции кома�
 
 ## Таблица флагов
 
-| Имя                | Алиасы            | Тип                   | По умолчанию                   | Что делает                                                                                        |
-|--------------------|-------------------|-----------------------|--------------------------------|---------------------------------------------------------------------------------------------------|
-| `--version`        | `-v`              | флаг                  | —                              | Печатает версию и выходит с кодом `0`.                                                            |
-| `--help`           | `-h`              | флаг                  | —                              | Печатает справку для текущей команды и выходит с кодом `0`.                                       |
-| `--verbose`        | `-V`              | флаг                  | `false`                        | Дублирует журнал на консоль — [ниже](#диагностические-флаги).                                     |
-| `--debug`          | `-D`              | флаг                  | `false`                        | Подробный журнал в файле — [ниже](#диагностические-флаги).                                        |
-| `--retries-number` | `-R`, `--retries` | целое ≥ 0             | `3`                            | Сколько раз **повторить** после первой ошибки; `0` — сразу [`--on-error`](#повторы-и---on-error). |
-| `--on-error`       | `-e`              | `abort` \| `continue` | `continue`                     | Что делать, когда повторы закончились.                                                            |
-| `--workspace`      | `-w`, `--dir`     | путь                  | CWD                            | [Корень workspace](#workspace) с рабочими копиями.                                                |
-| `--upstream`       | `-U`              | `github` \| `gitlab`  | —                              | Вид SCM; обязателен для [команд с SCM API](#подключение-к-scm). Канон — нижний регистр.           |
-| `--host`           | `-H`              | строка                | см. [ниже](#подключение-к-scm) | Хост инстанса SCM; как ввёл пользователь, без валидации формата в CLI.                            |
-| `--token`          | `-t`              | строка                | —                              | PAT для REST API SCM; обязателен для [команд с SCM API](#подключение-к-scm).                      |
-| `--profile`        | —                 | строка                | см. [профили][platform-profiles] | Имя YAML-профиля на этот запуск; переопределяет файл `default`.                                  |
+| Имя                | Алиасы | Тип                  | По умолчанию                           | Что делает                                                                                        |
+| ------------------ | ------ | -------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `--version`        | `-v`   | флаг                 | —                                      | Печатает версию и выходит с кодом `0`.                                                            |
+| `--help`           | `-h`   | флаг                 | —                                      | Печатает справку для текущей команды и выходит с кодом `0`.                                       |
+| `--verbose`        | `-V`   | флаг                 | `false`                                | Дублирует журнал на консоль — [ниже](#диагностические-флаги).                                     |
+| `--debug`          | `-D`   | флаг                 | `false`                                | Подробный журнал в файле — [ниже](#диагностические-флаги).                                        |
+| `--retries-number` | `-R`   | целое ≥ 0            | `3`                                    | Сколько раз **повторить** после первой ошибки; `0` — сразу [`--on-error`](#повторы-и---on-error). |
+| `--on-error`       | `-e`   | `abort` | `continue` | `continue`                             | Что делать, когда повторы закончились.                                                            |
+| `--workspace`      | `-w`   | путь                 | CWD                                    | [Корень workspace](#workspace) с рабочими копиями.                                                |
+| `--upstream`       | `-U`   | `github` | `gitlab`  | —                                      | Вид SCM; обязателен для [команд с SCM API](#подключение-к-scm). Канон — нижний регистр.           |
+| `--host`           | `-H`   | строка               | см. [ниже](#подключение-к-scm)         | Хост инстанса SCM; как ввёл пользователь, без валидации формата в CLI.                            |
+| `--token`          | `-t`   | строка               | —                                      | PAT для REST API SCM; обязателен для [команд с SCM API](#подключение-к-scm).                      |
+| `--profile`        | —      | строка               | см. [профили](../platform/profiles.md) | Имя YAML-профиля на этот запуск; переопределяет файл `default`.                                   |
 
 ### Короткие флаги чувствительны к регистру
 
@@ -93,18 +93,18 @@ githerd version <semver>
 ### Журнал на каждый запуск
 
 При любом запуске пишется журнал во временный каталог ОС
-([трассировка выполнения][operation-trace]). Флаги `-V` и `-D` журнал не
+([трассировка выполнения](../../product-intent/capability/platform/operation-trace.md)). Флаги `-V` и `-D` журнал не
 включают и не выключают: меняют детализацию и зеркало на stderr.
 
 `--verbose` задаётся **только из CLI**; ключ `verbose` в YAML профиля игнорируется.
-`--debug` — CLI и [профиль][platform-profiles] по общему резолву. `help` и `version` —
+`--debug` — CLI и [профиль](../platform/profiles.md) по общему резолву. `help` и `version` —
 только CLI.
 
 ### `--verbose`
 
 С `-V` те же записи, что в файле журнала, **дополнительно** идут на **stderr** в формате
 TSV (колонки и правила — [platform/logging.md](../platform/logging.md)). Сообщения
-пользователю через pterm ([терминал][terminal-feedback]) это не заменяет.
+пользователю через pterm ([терминал](../../product-intent/capability/platform/terminal-feedback.md)) это не заменяет.
 
 ### `--debug`
 
@@ -140,7 +140,7 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 ```
 
 Сетевые повторы в массовых операциях — см.
-[отказоустойчивое выполнение][resilient-network-execution]; детали — в спеке
+[отказоустойчивое выполнение](../../product-intent/capability/platform/resilient-network-execution.md); детали — в спеке
 команды.
 
 ### `--on-error`
@@ -157,7 +157,7 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 
 ## Workspace
 
-`--workspace` — каталог корня workspace для [локального отбора][repository-selection].
+`--workspace` — каталог корня workspace для [локального отбора](../../product-intent/capability/platform/repository-selection.md).
 Смысл «корень workspace» — как в capability отбора; отдельный термин в глоссарии
 здесь не вводим.
 
@@ -170,7 +170,7 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 
 ## Подключение к SCM
 
-Флаги `--upstream`, `--host` и `--token` задают контекст вызова [SCM API][SCM-PLATFORM-TERM].
+Флаги `--upstream`, `--host` и `--token` задают контекст вызова [SCM API](../../../glossary/terms/scm-platform.md).
 
 ### Когда нужны
 
@@ -200,15 +200,15 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 
 ### `--token`
 
-Секрет доступа к API. Правила маскировки в журнале — [platform/logging.md][platform-logging]
+Секрет доступа к API. Правила маскировки в журнале — [platform/logging.md](../platform/logging.md)
 (в том числе значение `--token`).
 
-Резолв `upstream`, `host` и `token` — [профили][platform-profiles].
+Резолв `upstream`, `host` и `token` — [профили](../platform/profiles.md).
 
 ## Откуда берётся значение
 
 Полный алгоритм, файлы в `~/.config/git-herder/` и выбор профиля — SSOT
-[platform/profiles.md][platform-profiles]. Кратко для глобальных флагов:
+[platform/profiles.md](../platform/profiles.md). Кратко для глобальных флагов:
 
 ```text
 argv (если флаг задан)  >  узлы профиля  >  builtin default продукта
@@ -222,17 +222,17 @@ argv (если флаг задан)  >  узлы профиля  >  builtin defa
 | `--verbose` | только CLI (`verbose` в YAML игнорируется) |
 
 `--debug` и остальные параметры из [таблицы флагов](#таблица-флагов), кроме
-исключений выше, — полный стек резолва в [profiles][platform-profiles].
+исключений выше, — полный стек резолва в [profiles](../platform/profiles.md).
 
 Переменные окружения в резолве **не** используются.
 
 ## Коды выхода
 
-| Код | Когда                                                                                                                                                                                                                             |
-|-----|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `0` | `--help`, `--version`; команда успешна; при `continue` — все объекты без ошибки после повторов.                                                                                                                                   |
-| `1` | Ошибка: неверные флаги (включая недопустимый `--upstream`), ошибка [профиля][platform-profiles], плохой workspace, отсутствие обязательных SCM-параметров для SCM-команды, `abort` на сбое, `continue` но был хотя бы один сбой после повторов, другой фатальный сбой. |
-| `2` | Неверный вызов CLI (нет команды, синтаксис) — по правилам Cobra; команда может уточнить в своей спеке.                                                                                                                            |
+| Код | Когда                                                                                                                                                                                                                                                                        |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0` | `--help`, `--version`; команда успешна; при `continue` — все объекты без ошибки после повторов.                                                                                                                                                                              |
+| `1` | Ошибка: неверные флаги (включая недопустимый `--upstream`), ошибка [профиля](../platform/profiles.md), плохой workspace, отсутствие обязательных SCM-параметров для SCM-команды, `abort` на сбое, `continue` но был хотя бы один сбой после повторов, другой фатальный сбой. |
+| `2` | Неверный вызов CLI (нет команды, синтаксис) — по правилам Cobra; команда может уточнить в своей спеке.                                                                                                                                                                       |
 
 Дополнительные коды — только в спеках команд. Для `--help` и `--version` не
 меняют.
@@ -242,40 +242,27 @@ argv (если флаг задан)  >  узлы профиля  >  builtin defa
 - Глобальные флаги задаются на корне CLI и наследуются.
 - `--on-error` не подменяет повторы.
 - Дублирование журнала на stderr — только с `-V` (при `-D` на stderr debug попадает
-  только вместе с `-V`).
+только вместе с `-V`).
 - Канон `--upstream`: только `github` или `gitlab`.
 - `--host` в CLI-контракте не валидируется; дефолты `host` — только пары
-  `github` → `github.com` и `gitlab` → `gitlab.com` при отсутствии явного `host`
-  после резолва.
+`github` → `github.com` и `gitlab` → `gitlab.com` при отсутствии явного `host`
+после резолва.
 
 ## Связь с замыслом
 
-- [Трассировка выполнения][operation-trace]
-- [Обратная связь в терминале][terminal-feedback]
-- [Отказоустойчивое выполнение][resilient-network-execution]
-- [Единый отбор][repository-selection]
-- [Профили (capability)][profiles]
-- [Профили и резолв (спека)][platform-profiles]
-- [ADR-26101701][ADR-26101701] — Cobra, slog, pterm
+- [Трассировка выполнения](../../product-intent/capability/platform/operation-trace.md)
+- [Обратная связь в терминале](../../product-intent/capability/platform/terminal-feedback.md)
+- [Отказоустойчивое выполнение](../../product-intent/capability/platform/resilient-network-execution.md)
+- [Единый отбор](../../product-intent/capability/platform/repository-selection.md)
+- [Профили (capability)](../../product-intent/capability/platform/profiles.md)
+- [Профили и резолв (спека)](../platform/profiles.md)
+- [ADR-26101701](../../../ADR/ADR-26101701-go-application-stack.md) — Cobra, slog, pterm
 
 ## Вне этого документа
 
 - Отбор на SCM и правила отбора в командах.
-- Файлы профилей, резолв и `--profile` — [platform/profiles.md][platform-profiles].
+- Файлы профилей, резолв и `--profile` — [platform/profiles.md](../platform/profiles.md).
 - CRUD профилей и проверка на SCM — вне этой спеки.
 - Маппинг `host` на базовый URL HTTP-адаптеров — не контракт CLI
-  ([ADR-26101703][ADR-26101703]).
-- Формат журнала в файле — [platform/logging.md][platform-logging].
-
-<!-- LINKS -->
-[SCM-PLATFORM-TERM]: ../../../glossary/terms/scm-platform.md
-[platform-profiles]: ../platform/profiles.md
-[platform-logging]: ../platform/logging.md
-[ADR-26101703]: ../../../ADR/ADR-26101703-scm-http-client-wrapper.md
-[product-intent-readme]: ../../product-intent/README.md
-[operation-trace]: ../../product-intent/capability/platform/operation-trace.md
-[terminal-feedback]: ../../product-intent/capability/platform/terminal-feedback.md
-[resilient-network-execution]: ../../product-intent/capability/platform/resilient-network-execution.md
-[repository-selection]: ../../product-intent/capability/platform/repository-selection.md
-[profiles]: ../../product-intent/capability/platform/profiles.md
-[ADR-26101701]: ../../../ADR/ADR-26101701-go-application-stack.md
+([ADR-26101703](../../../ADR/ADR-26101703-scm-http-client-wrapper.md)).
+- Формат журнала в файле — [platform/logging.md](../platform/logging.md).

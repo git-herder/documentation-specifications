@@ -79,7 +79,8 @@ publish:
 ```
 
 Что означают ключи, которых нет в [таблице глобальных флагов](../cli/index.md)
-(например `upstream-group`), — в спеках **конкретных** команд.
+(например `upstream-group`), — в спеках **конкретных** команд. Критерии SCM-отбора
+(`qp`, `qn`, `qt`, `qa`, `scm-search`, `limited-scope`) — [scm-repository-selection.md](scm-repository-selection.md).
 
 ## Какие ключи можно писать в YAML
 
@@ -169,5 +170,5 @@ flowchart TD
 
 - CLI управления профилями (`list`, `use`, `create`, `drop`, `edit`) — [команда `profile`](../cli/profile/index.md).
 - Проверка профиля на SCM (отдельная команда, когда появится).
-- Смысл параметров отдельных команд (`upstream-group`, отбор и т.п.).
+- Смысл SCM-отбора — [scm-repository-selection.md](scm-repository-selection.md); прочих параметров команд (`upstream-group` и т.п.) — в спеках команд.
 - Код в `application/` (в том числе Viper).

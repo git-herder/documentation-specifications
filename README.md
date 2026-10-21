@@ -49,6 +49,7 @@ specifications/
 | Профили, резолв конфигурации (CLI, YAML, builtin) | [platform/profiles.md](platform/profiles.md) | актуально |
 | Критерии SCM-отбора (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--limited-scope`) | [platform/scm-repository-selection.md](platform/scm-repository-selection.md) | актуально |
 | Контракт команды `profile` | [cli/profile/index.md](cli/profile/index.md) | актуально |
+| Контракт команды `report` | [cli/report/index.md](cli/report/index.md) | актуально |
 
 Не дублируйте таблицы глобальных флагов и инварианты платформы вне SSOT —
 ссылайтесь на строку таблицы выше.

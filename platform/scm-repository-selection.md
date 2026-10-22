@@ -10,24 +10,28 @@
 
 Замысел отбора: [repository-selection (capability)][repository-selection-capability].
 Перечисление и локальная оценка части критериев: [ADR-26102001][adr-local-eval].
-Guard на публичных SaaS: [ADR-26102002][adr-saas-guard]. Контекст SCM (`--upstream`,
-`--host`, `--token`) и резолв конфигурации — [cli/index.md](../cli/index.md),
-[profiles.md](profiles.md).
+Guard на публичных SaaS: [ADR-26102002][adr-saas-guard]. Раскладка hub и
+extension для SCM-специфичных ключей: [ADR-26102201][adr-hub-extension]. Контекст SCM
+(`--upstream`, `--host`, `--token`) и резолв конфигурации —
+[cli/index.md](../cli/index.md), [profiles.md](profiles.md).
 
 ## Трассировка вверх
 
 - [Единый отбор для массовых операций][repository-selection-capability]
 - [ADR-26102001: локальная оценка критериев SCM-отбора][adr-local-eval]
 - [ADR-26102002: guard affiliation-scope на публичных SaaS][adr-saas-guard]
+- [ADR-26102201: hub и extension-спеки SCM-отбора][adr-hub-extension]
 - [Глобальные параметры CLI](../cli/index.md) (подключение к SCM, коды выхода)
 - [Профили и выбор значений](profiles.md)
 
 ## Назначение
 
 Пользователь задаёт критерии в терминах Git Herder; команда получает **итоговый
-набор** репозиториев на выбранной [SCM-платформе][SCM-PLATFORM-TERM]. Имена флагов,
-валидация значений и композиция с профилем зафиксированы **только** в этом документе.
-Спеки команд **не** дублируют таблицу ниже, а ссылаются на неё.
+набор** репозиториев на выбранной [SCM-платформе][SCM-PLATFORM-TERM]. **Переносимые**
+опции отбора (таблица ниже), общий резолв с профилем и композиция критериев
+зафиксированы в **этом** документе (hub). **SCM-специфичные** флаги и ключи профиля —
+в [extension-спеках](#расширения-per-upstream) по [ADR-26102201][adr-hub-extension];
+спеки команд таблицы **не** дублируют.
 
 ## Синтаксис CLI
 
@@ -55,6 +59,28 @@ Guard на публичных SaaS: [ADR-26102002][adr-saas-guard]. Контек
 
 Ключи в YAML-профиле — те же имена **без** `--`: `qp`, `qn`, `qt`, `qa`,
 `scm-search`, `limited-scope`.
+
+## Расширения per upstream
+
+Платформо-специфичные опции отбора (только для одного `upstream` после резолва)
+описаны **отдельно** от перечисления через API — см.
+[ADR-26102201][adr-hub-extension]. Контракт CLI и профиля для расширений; REST и
+пагинация — в `repository-enumeration.md` того же `upstream`.
+
+| `upstream` после резолва | Extension-спека (зарезервировано, контракт по мере появления) |
+| ------------------------ | -------------------------------------------------------------- |
+| `github` | [github/repository-selection-extensions.md](../scm/github/repository-selection-extensions.md) |
+| `gitlab` | [gitlab/repository-selection-extensions.md](../scm/gitlab/repository-selection-extensions.md) |
+
+Общие правила для extension (детали флагов — только в extension-файле):
+
+| Правило | Текст |
+| ------- | ----- |
+| Резолв с профилем | Как для переносимых ключей — [ниже](#резолв-с-профилем) и [profiles.md](profiles.md); алгоритм в extension **не** повторять. |
+| Допустимость | Флаг или ключ профиля из extension **чужого** `upstream` — ошибка до старта (exit `1`). |
+| Композиция | Условия extension и переносимые `--q*` после резолва — **AND**, если в extension не сказано иное. |
+| Критерий задан | Заданный extension-параметр учитывается при проверке «задан хотя бы один критерий отбора» ([ошибки](#ошибки-и-коды-выхода)). |
+| `scm-search` | Взаимоисключения extension с `--scm-search` — в extension-спеке или здесь при появлении первых флагов; до появления extension таблиц — как для `--q*` не применимо. |
 
 ## Резолв с профилем
 
@@ -232,20 +258,23 @@ flowchart TD
 | ------- | -------- |
 | После резолва одновременно `--scm-search` и любой `--q*` | Сообщение об ошибке; команда не стартует. |
 | Повтор `--scm-search` в argv | Ошибка контракта. |
-| Ни один критерий не задан (`qp`, `qn`, `qt`, `qa`, `scm-search` все «не задан») | Ошибка: не задан критерий SCM-отбора. |
+| Ни один критерий не задан (переносимые `qp`, `qn`, `qt`, `qa`, `scm-search` и задействованные extension-параметры для текущего `upstream` все «не задан») | Ошибка: не задан критерий SCM-отбора. |
+| После резолва задан extension-параметр не для текущего `upstream` | Ошибка до старта (exit `1`). |
 | Неверный синтаксис значения `--qt` (в т.ч. операторы `<` … `>=`) | Ошибка разбора значения. |
 | Неверный синтаксис значения `--qa` | Ошибка разбора значения. |
 
 Итоговый набор **пуст** после успешного отбора — поведение **команды** (ошибка,
 предупреждение или успех с нулём объектов); здесь не фиксируется.
 
-Параметры отбора, для которых на выбранной SCM **нет** аналога, — открытый вопрос в
-[capability отбора][repository-selection-capability]; в P0 в этом документе отдельно
-не решается.
+Переносимый флаг без аналога на выбранной SCM (не extension) — по-прежнему открытый
+вопрос в [capability отбора][repository-selection-capability]; для **extension**-флагов
+чужого `upstream` действует [ошибка](#ошибки-и-коды-выхода) выше.
 
 ## Инварианты
 
-- Таблица опций SCM-отбора живёт **только** в этом файле.
+- Таблица **переносимых** опций SCM-отбора живёт **только** в этом файле (hub).
+- Таблица опций **extension** для каждого `upstream` — **только** в
+  `scm/<upstream>/repository-selection-extensions.md` ([раскладка][adr-hub-extension]).
 - Режим `--scm-search` несовместим с любым `--q*` после резолва.
 - В режиме `--scm-search` ограничение `limited-scope` к запросу в SCM **не**
   применяется.
@@ -259,7 +288,9 @@ flowchart TD
 
 ## Не описывать здесь
 
-- REST-эндпоинты, пагинацию и маппинг полей API — спеки SCM-адаптеров (когда появятся).
+- Таблицы SCM-специфичных флагов — [extension-спеки](#расширения-per-upstream).
+- REST-эндпоинты, пагинацию и маппинг полей API —
+  `scm/<upstream>/repository-enumeration.md` (не extension).
 - Полную схему нормализованной карточки репозитория.
 - Пошаговые сценарии отдельных команд — `cli/<command>/`.
 - Реализацию в `application/`.
@@ -270,3 +301,4 @@ flowchart TD
 [repository-selection-capability]: ../../product-intent/capability/platform/repository-selection.md
 [adr-local-eval]: ../../../ADR/ADR-26102001-scm-repository-selection-evaluation.md
 [adr-saas-guard]: ../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md
+[adr-hub-extension]: ../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md

@@ -69,8 +69,11 @@ extension для SCM-специфичных ключей: [ADR-26102201][adr-hub
 
 | `upstream` после резолва | Extension-спека |
 | ------------------------ | --------------- |
-| `github` | [github/repository-selection-extensions.md](../scm/github/repository-selection-extensions.md) (зарезервировано) |
+| `github` | [github/repository-selection-extensions.md](../scm/github/repository-selection-extensions.md) |
 | `gitlab` | [gitlab/repository-selection-extensions.md](../scm/gitlab/repository-selection-extensions.md) |
+
+Реализация переносимого `--scope` на запросах к API (без дублирования контракта
+значений) — в **каталоге и справочнике** extension выбранного `upstream`.
 
 Общие правила для extension (детали флагов — только в extension-файле):
 
@@ -213,23 +216,20 @@ clone:
 
 | Значение | Поведение (режим `--q*`, не `--scm-search`) |
 | -------- | --------------------------------------------- |
-| `affiliated` (по умолчанию) | К **запросам перечисления и обогащения** (всё, что строит адаптер до локальной фильтрации) добавляется продуктовое ограничение: только репозитории, **связанные с текущим пользователем**. На GitLab — семантика **membership**; на GitHub — **involves**; детали API — в адаптере и enumeration, не здесь. |
-| `all` | Ограничение **не** добавляется. |
+| `affiliated` (по умолчанию) | Адаптер **добавляет** к запросам перечисления и обогащения (до локальной фильтрации `--q*`) продуктовое ограничение: только репозитории, **связанные с текущим пользователем**. Как именно — в [extension](#расширения-per-upstream) выбранного `upstream`. |
+| `all` | Это ограничение **не** добавляется. |
 
-На хостах **`github.com`** и **`gitlab.com`** при `scope=affiliated` поведение
-**согласовано** с guard из [ADR-26102002][adr-saas-guard]. На **любом** хосте, где
-адаптер умеет применить то же ограничение, значение `affiliated` использует ту же
-продуктовую семантику.
+В режиме `--scm-search` значение `--scope` **не влияет** на запрос в SCM; правила
+публичного SaaS для `scope` и предупреждения — [ADR-26102002][adr-saas-guard-scope]
+(в ветке `--scm-search` предупреждение **не** выводится).
 
-При `scope=all` на `github.com` или `gitlab.com` **без** `--scm-search` перед
-перечислением обязательны:
+Маппинг `affiliated` / `all` на HTTP — в extension; политика на `github.com` /
+`gitlab.com` — **только** в [ADR-26102002][adr-saas-guard-scope]:
 
-- запись `level=warn` в журнал;
-- то же предупреждение на консоль (pterm), по аналогии с [profiles.md](profiles.md).
-
-Если задан `--scm-search`, это предупреждение **не** выводится.
-
-В режиме `--scm-search` значение `--scope` **не влияет** на запрос в SCM.
+| `upstream` | Документ |
+| ---------- | -------- |
+| `github` | [github/repository-selection-extensions.md](../scm/github/repository-selection-extensions.md#scope) |
+| `gitlab` | [gitlab/repository-selection-extensions.md](../scm/gitlab/repository-selection-extensions.md#scope) |
 
 ## Пайплайн отбора
 
@@ -297,7 +297,7 @@ flowchart TD
 
 ## Не описывать здесь
 
-- Таблицы SCM-специфичных флагов — [extension-спеки](#расширения-per-upstream).
+- Таблицы SCM-специфичных флагов и реализация `--scope` на API — [extension-спеки](#расширения-per-upstream).
 - REST-эндпоинты, пагинацию и маппинг полей API —
   `scm/<upstream>/repository-enumeration.md` (не extension).
 - Полную схему нормализованной карточки репозитория.
@@ -310,4 +310,5 @@ flowchart TD
 [repository-selection-capability]: ../../product-intent/capability/platform/repository-selection.md
 [adr-local-eval]: ../../../ADR/ADR-26102001-scm-repository-selection-evaluation.md
 [adr-saas-guard]: ../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md
+[adr-saas-guard-scope]: ../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md#scope-public-saas
 [adr-hub-extension]: ../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md

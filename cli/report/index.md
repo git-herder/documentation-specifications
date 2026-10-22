@@ -137,7 +137,7 @@ sequenceDiagram
 
 | `upstream` | Extension (CLI) | Запросы к API (enumeration) |
 | ---------- | --------------- | --------------------------- |
-| `github`   | [github/repository-selection-extensions.md](../../scm/github/repository-selection-extensions.md) (зарезервировано) | [github/repository-enumeration.md](../../scm/github/repository-enumeration.md) |
+| `github`   | [github/repository-selection-extensions.md](../../scm/github/repository-selection-extensions.md) | [github/repository-enumeration.md](../../scm/github/repository-enumeration.md) |
 | `gitlab`   | [gitlab/repository-selection-extensions.md](../../scm/gitlab/repository-selection-extensions.md) | [gitlab/repository-enumeration.md](../../scm/gitlab/repository-enumeration.md) |
 
 ## Режим вывода

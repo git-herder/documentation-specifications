@@ -80,7 +80,9 @@ publish:
 
 Что означают ключи, которых нет в [таблице глобальных флагов](../cli/index.md)
 (например `upstream-group`), — в спеках **конкретных** команд. Критерии SCM-отбора
-(`qp`, `qn`, `qt`, `qa`, `scm-search`, `limited-scope`) — [scm-repository-selection.md](scm-repository-selection.md).
+(`qp`, `qn`, `qt`, `qa`, `scm-search`, `scope`; GitLab — `include-inactive` в
+[extension](../scm/gitlab/repository-selection-extensions.md)) —
+[scm-repository-selection.md](scm-repository-selection.md).
 
 ## Какие ключи можно писать в YAML
 

@@ -47,8 +47,9 @@ specifications/
 | Контракт команды `<name>` | `cli/<name>/index.md` | по мере появления команд |
 | Журнал выполнения, JSON, sinks, redaction | [platform/logging.md](platform/logging.md) | актуально |
 | Профили, резолв конфигурации (CLI, YAML, builtin) | [platform/profiles.md](platform/profiles.md) | актуально |
-| Критерии SCM-отбора, переносимые (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--limited-scope`) | [platform/scm-repository-selection.md](platform/scm-repository-selection.md) | актуально |
-| Критерии SCM-отбора, extension per `upstream` | `scm/<upstream>/repository-selection-extensions.md` | зарезервировано |
+| Критерии SCM-отбора, переносимые (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--scope`) | [platform/scm-repository-selection.md](platform/scm-repository-selection.md) | актуально |
+| Критерии SCM-отбора, extension GitLab | [scm/gitlab/repository-selection-extensions.md](scm/gitlab/repository-selection-extensions.md) | актуально |
+| Критерии SCM-отбора, extension GitHub | [scm/github/repository-selection-extensions.md](scm/github/repository-selection-extensions.md) | зарезервировано |
 | Контракт команды `profile` | [cli/profile/index.md](cli/profile/index.md) | актуально |
 | Контракт команды `report` | [cli/report/index.md](cli/report/index.md) | актуально |
 

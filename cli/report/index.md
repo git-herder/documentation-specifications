@@ -17,8 +17,9 @@ githerd [глобальные опции] report [опции SCM-отбора] [
 `upstream`, `token` и `host` после сборки настроек ([подключение к SCM](../index.md#подключение-к-scm)).
 `--workspace` **игнорируется**.
 
-Критерии отбора (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--limited-scope`) —
-полный контракт в [scm-repository-selection.md](../../platform/scm-repository-selection.md), таблицу
+Критерии отбора (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--scope`; для GitLab
+ещё `--include-inactive` — [extension](../../scm/gitlab/repository-selection-extensions.md)) —
+полный контракт в [scm-repository-selection.md](../../platform/scm-repository-selection.md), таблицы
 здесь **не** повторяют.
 
 ### Опции команды
@@ -41,9 +42,10 @@ githerd [глобальные опции] report [опции SCM-отбора] [
    шага должны быть заданы `upstream` и `token`, а `host` — явно или по правилам
    пары `upstream` → хост по умолчанию.
    - Собирает **критерии SCM-отбора** (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`,
-   `--limited-scope` и одноимённые ключи профиля). Если параметр передан в argv,
-   берёт только argv для этого ключа; иначе — значение из профиля или встроенный
-   default (`limited-scope` по умолчанию `true`, остальные критерии — «не задан»).
+   `--scope`, extension-параметры по `upstream` и одноимённые ключи профиля). Если
+   параметр передан в argv, берёт только argv для этого ключа; иначе — значение из
+   профиля или встроенный default (`scope` по умолчанию `affiliated`, остальные
+   критерии — «не задан»).
    - Собирает **опции** `report`: `--output` / `-o`, `--force` (ключи `output`, `force` в
    профиле).
 2. **Проверяет критерии отбора.**
@@ -55,7 +57,8 @@ githerd [глобальные опции] report [опции SCM-отбора] [
    - Проверяет синтаксис значений `--qt` и `--qa`; при неверном формате завершает с
      ошибкой, код `1`.
    - Если не задан **ни один** критерий (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`;
-     один только `--limited-scope` критерием **не** считается):
+     один только `--scope` (в т.ч. default `affiliated`) и модификаторы вроде
+     `--include-inactive` критерием **не** считаются):
      - выводит **предупреждение**, что без критериев отбора перечисление репозиториев
        может занять много времени и создать высокую нагрузку на SCM API;
      - **интерактивно** запрашивает подтверждение ([обратная связь в
@@ -83,7 +86,7 @@ githerd [глобальные опции] report [опции SCM-отбора] [
     платформы. В него передает критерии отбора после шагов 1–2 и параметры
     подключения (`host`, `token`).
    - Адаптер выполняет отбор по контракту [scm-repository-selection.md](../../platform/scm-repository-selection.md):
-   перечисляет репозитории в допустимом контексте (с учётом `--limited-scope` или
+   перечисляет репозитории в допустимом контексте (с учётом `--scope`, extension и
    `--scm-search`), при необходимости дозагружает метаданные для `--qt` и `--qa`,
    отфильтровывает результат по `--qp`, `--qn`, `--qt` и `--qa`. Подробности шагов —
    в разделе [SCM-отбор](#scm-отбор).
@@ -132,10 +135,10 @@ sequenceDiagram
 (перечисление, дозагрузка метаданных, локальная фильтрация) — в
 [scm-repository-selection.md](../../platform/scm-repository-selection.md).
 
-| `upstream` | Где описаны запросы к API                                                      |
-| ---------- | ------------------------------------------------------------------------------ |
-| `github`   | [github/repository-enumeration.md](../../scm/github/repository-enumeration.md) |
-| `gitlab`   | [gitlab/repository-enumeration.md](../../scm/gitlab/repository-enumeration.md) |
+| `upstream` | Extension (CLI) | Запросы к API (enumeration) |
+| ---------- | --------------- | --------------------------- |
+| `github`   | [github/repository-selection-extensions.md](../../scm/github/repository-selection-extensions.md) (зарезервировано) | [github/repository-enumeration.md](../../scm/github/repository-enumeration.md) |
+| `gitlab`   | [gitlab/repository-selection-extensions.md](../../scm/gitlab/repository-selection-extensions.md) | [gitlab/repository-enumeration.md](../../scm/gitlab/repository-enumeration.md) |
 
 ## Режим вывода
 

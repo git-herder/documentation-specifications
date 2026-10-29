@@ -6,7 +6,7 @@ CLI → HTTP. [base-enumeration.md](../base-enumeration.md),
 
 ## Реестр (REST)
 
-| Параметр | Контракт | Mapping |
+| Параметр | Контракт | Маппинг |
 | -------- | -------- | ------- |
 | `scope` | [hub § scope][scm-repository-selection-scope] | [scope.md](scope.md) |
 | `include-inactive` | [options § include-inactive][options-include-inactive] | [include-inactive.md](include-inactive.md) |
@@ -15,11 +15,6 @@ CLI → HTTP. [base-enumeration.md](../base-enumeration.md),
 | `qa` | [hub § qa][scm-repository-selection-qa] | [qa.md](qa.md) |
 
 `qp`, `qn` — только [enumeration/](../repository-enumeration/index.md).
-
-## Комбинации
-
-`scope` + `include-inactive` на одном list — SSOT в [scope.md](scope.md) (ссылка на
-include-inactive, без дублирования таблиц).
 
 <!-- LINKS -->
 [scm-repository-selection]: ../../../platform/scm-repository-selection.md

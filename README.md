@@ -48,8 +48,14 @@ specifications/
 | Журнал выполнения, JSON, sinks, redaction | [platform/logging.md](platform/logging.md) | актуально |
 | Профили, резолв конфигурации (CLI, YAML, builtin) | [platform/profiles.md](platform/profiles.md) | актуально |
 | Критерии SCM-отбора, переносимые (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--scope`) | [platform/scm-repository-selection.md](platform/scm-repository-selection.md) | актуально |
-| Критерии SCM-отбора, extension GitLab | [scm/gitlab/repository-selection-extensions.md](scm/gitlab/repository-selection-extensions.md) | актуально |
-| Критерии SCM-отбора, extension GitHub | [scm/github/repository-selection-extensions.md](scm/github/repository-selection-extensions.md) | актуально |
+| SCM-отбор, options GitHub | [scm/github/repository-selection-options.md](scm/github/repository-selection-options.md) | актуально |
+| SCM-отбор, options GitLab | [scm/gitlab/repository-selection-options.md](scm/gitlab/repository-selection-options.md) | актуально |
+| SCM-отбор, mapping GitHub (реестр) | [scm/github/repository-selection-mapping/index.md](scm/github/repository-selection-mapping/index.md) | актуально |
+| SCM-отбор, mapping GitLab (реестр) | [scm/gitlab/repository-selection-mapping/index.md](scm/gitlab/repository-selection-mapping/index.md) | актуально |
+| SCM-отбор, base enumeration GitHub | [scm/github/base-enumeration.md](scm/github/base-enumeration.md) | каркас |
+| SCM-отбор, base enumeration GitLab | [scm/gitlab/base-enumeration.md](scm/gitlab/base-enumeration.md) | каркас |
+| SCM-отбор, клиентская фильтрация GitHub (реестр) | [scm/github/repository-enumeration/index.md](scm/github/repository-enumeration/index.md) | актуально |
+| SCM-отбор, клиентская фильтрация GitLab (реестр) | [scm/gitlab/repository-enumeration/index.md](scm/gitlab/repository-enumeration/index.md) | актуально |
 | Контракт команды `profile` | [cli/profile/index.md](cli/profile/index.md) | актуально |
 | Контракт команды `report` | [cli/report/index.md](cli/report/index.md) | актуально |
 

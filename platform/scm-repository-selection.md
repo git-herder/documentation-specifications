@@ -29,8 +29,9 @@ extension для SCM-специфичных ключей: [ADR-26102201][adr-hub
 Пользователь задаёт критерии в терминах Git Herder; команда получает **итоговый
 набор** репозиториев на выбранной [SCM-платформе][SCM-PLATFORM-TERM]. **Переносимые**
 опции отбора (таблица ниже), общий резолв с профилем и композиция критериев
-зафиксированы в **этом** документе (hub). **SCM-специфичные** флаги и ключи профиля —
-в [extension-спеках](#расширения-per-upstream) по [ADR-26102201][adr-hub-extension];
+зафиксированы в **этом** документе (hub). **SCM-специфичные** флаги и ключи профиля (extension) —
+в [options per upstream](#options-per-upstream); маппинг hub- и extension-параметров
+на API — в `repository-selection-mapping/` ([ADR-26102201][adr-hub-extension]);
 спеки команд таблицы **не** дублируют.
 
 ## Синтаксис CLI
@@ -60,31 +61,30 @@ extension для SCM-специфичных ключей: [ADR-26102201][adr-hub
 Ключи в YAML-профиле — те же имена **без** `--`: `qp`, `qn`, `qt`, `qa`,
 `scm-search`, `scope`.
 
-## Расширения per upstream
+## Options per upstream
 
-Платформо-специфичные опции отбора (только для одного `upstream` после резолва)
-описаны **отдельно** от перечисления через API — см.
-[ADR-26102201][adr-hub-extension]. Контракт CLI и профиля для расширений; REST и
-пагинация — в `repository-enumeration.md` того же `upstream`.
+Extension-флаги (только для одного `upstream` после резолва): контракт CLI и
+продуктовый эффект **без** REST — [ADR-26102201][adr-hub-extension].
 
-| `upstream` после резолва | Extension-спека |
-| ------------------------ | --------------- |
-| `github` | [github/repository-selection-extensions.md](../scm/github/repository-selection-extensions.md) |
-| `gitlab` | [gitlab/repository-selection-extensions.md](../scm/gitlab/repository-selection-extensions.md) |
+| `upstream` | Options | Base list / карточка | Mapping | Enumeration (клиент) |
+| ---------- | ------- | -------------------- | ------- | ---------------------- |
+| `github` | [options](../scm/github/repository-selection-options.md) | [base-enumeration](../scm/github/base-enumeration.md) | [mapping/index](../scm/github/repository-selection-mapping/index.md) | [enumeration/index](../scm/github/repository-enumeration/index.md) |
+| `gitlab` | [options](../scm/gitlab/repository-selection-options.md) | [base-enumeration](../scm/gitlab/base-enumeration.md) | [mapping/index](../scm/gitlab/repository-selection-mapping/index.md) | [enumeration/index](../scm/gitlab/repository-enumeration/index.md) |
 
-Реализация переносимого `--scope` на запросах к API (без дублирования контракта
-значений) — в **каталоге и справочнике** extension выбранного `upstream`.
+**Mapping** — CLI → REST; **enumeration** — фильтрация выборки на клиенте (`qp`, `qn`,
+`qt`, `qa`); [ADR-26102201][adr-hub-extension].
 
-Общие правила для extension (детали флагов — только в extension-файле):
+Общие правила для extension (детали флагов — только в options; REST — в
+`mapping/<parameter>.md`; клиентская фильтрация — в `repository-enumeration/<parameter>.md`):
 
 | Правило | Текст |
 | ------- | ----- |
-| Резолв с профилем | Как для переносимых ключей — [ниже](#резолв-с-профилем) и [profiles.md](profiles.md); алгоритм в extension **не** повторять. |
-| Допустимость | Флаг или ключ профиля из extension **чужого** `upstream` — ошибка до старта (exit `1`). |
-| Композиция | Условия extension и переносимые `--q*` после резолва — **AND**, если в extension не сказано иное. |
-| Критерий задан | Extension-параметр, описанный как **критерий** в extension-спеке, учитывается при проверке «задан хотя бы один критерий» ([ошибки](#ошибки-и-коды-выхода)). **Модификаторы** pipeline (например `include-inactive` на GitLab) критерием **не** считаются — только в extension. |
-| `scm-search` | Взаимоисключения extension с `--scm-search` — в extension-спеке; продуктовые модификаторы hub/extension в ветке `--scm-search` **не** применяются, если в extension не сказано иное. |
-| Модификаторы hub | Таблицы extension в hub **не** дублировать (например `--include-inactive` — только в GitLab extension). |
+| Резолв с профилем | Как для переносимых ключей — [ниже](#резолв-с-профилем) и [profiles.md](profiles.md); алгоритм в options **не** повторять. |
+| Допустимость | Флаг или ключ профиля из options **чужого** `upstream` — ошибка до старта (exit `1`). |
+| Композиция | Условия extension и переносимые `--q*` после резолва — **AND**, если в options не сказано иное. |
+| Критерий задан | Extension-параметр, описанный как **критерий** в options, учитывается при проверке «задан хотя бы один критерий» ([ошибки](#ошибки-и-коды-выхода)). **Модификаторы** pipeline (например `include-inactive` на GitLab) критерием **не** считаются — только в options. |
+| `scm-search` | Взаимоисключения extension с `--scm-search` — в options или mapping; модификаторы hub/extension в ветке `--scm-search` **не** применяются, если не сказано иное. |
+| Таблицы options | В hub **не** дублировать (например `--include-inactive` — только GitLab options). |
 
 ## Резолв с профилем
 
@@ -149,8 +149,9 @@ clone:
 
 Несколько значений одного флага — несколько условий, связанных AND с остальными.
 
-Оценка `qp` / `qn` выполняется **локально** по нормализованной карточке репозитория
-после перечисления ([ADR-26102001][adr-local-eval]).
+Оценка `qp` / `qn` выполняется **локально** по карточке после перечисления
+([ADR-26102001][adr-local-eval]); per-SCM алгоритм — `scm/<upstream>/repository-enumeration/qp.md`
+и `qn.md`.
 
 ### `qt` (теги, топики, лейблы)
 
@@ -177,8 +178,9 @@ clone:
 
 ⇔ `(tag team=Alpha OR label team=Alpha) AND (tag env=foo-bar OR label env=foo-bar)`.
 
-Адаптер обязан **наполнить** в карточке репозитория данные, нужные для проверки
-`qt` (без описания REST в этом документе).
+Адаптер **наполняет** карточку для проверки `qt` через REST
+(`scm/<upstream>/repository-selection-mapping/qt.md`); сопоставление условия —
+`scm/<upstream>/repository-enumeration/qt.md`.
 
 ### `qa` (атрибуты)
 
@@ -195,7 +197,8 @@ clone:
 Символы `<` и `>` в shell передают через `--qa=key>=value`, кавычки или аргументы
 после `--` — [синтаксис опций](../cli/index.md#синтаксис-опций).
 
-Несколько `--qa` — AND. Адаптер наполняет поля custom properties для проверки.
+Несколько `--qa` — AND. REST-дозагрузка — mapping `qa.md`; проверка на карточке —
+`repository-enumeration/qa.md` per `upstream`.
 
 ### `scm-search`
 
@@ -216,20 +219,20 @@ clone:
 
 | Значение | Поведение (режим `--q*`, не `--scm-search`) |
 | -------- | --------------------------------------------- |
-| `affiliated` (по умолчанию) | Адаптер **добавляет** к запросам перечисления и обогащения (до локальной фильтрации `--q*`) продуктовое ограничение: только репозитории, **связанные с текущим пользователем**. Как именно — в [extension](#расширения-per-upstream) выбранного `upstream`. |
+| `affiliated` (по умолчанию) | Адаптер **добавляет** к запросам перечисления и обогащения (до локальной фильтрации `--q*`) продуктовое ограничение: только репозитории, **связанные с текущим пользователем**. Маппинг на HTTP — [mapping `scope`](#options-per-upstream) выбранного `upstream`. |
 | `all` | Это ограничение **не** добавляется. |
 
 В режиме `--scm-search` значение `--scope` **не влияет** на запрос в SCM; правила
 публичного SaaS для `scope` и предупреждения — [ADR-26102002][adr-saas-guard-scope]
 (в ветке `--scm-search` предупреждение **не** выводится).
 
-Маппинг `affiliated` / `all` на HTTP — в extension; политика на `github.com` /
-`gitlab.com` — **только** в [ADR-26102002][adr-saas-guard-scope]:
+Маппинг `affiliated` / `all` на HTTP — в `repository-selection-mapping/scope.md`;
+политика на `github.com` / `gitlab.com` — **только** в [ADR-26102002][adr-saas-guard-scope]:
 
-| `upstream` | Документ |
-| ---------- | -------- |
-| `github` | [github/repository-selection-extensions.md](../scm/github/repository-selection-extensions.md#scope) |
-| `gitlab` | [gitlab/repository-selection-extensions.md](../scm/gitlab/repository-selection-extensions.md#scope) |
+| `upstream` | Mapping `scope` |
+| ---------- | --------------- |
+| `github` | [github/repository-selection-mapping/scope.md](../scm/github/repository-selection-mapping/scope.md) |
+| `gitlab` | [gitlab/repository-selection-mapping/scope.md](../scm/gitlab/repository-selection-mapping/scope.md) |
 
 ## Пайплайн отбора
 
@@ -282,7 +285,8 @@ flowchart TD
 
 - Таблица **переносимых** опций SCM-отбора живёт **только** в этом файле (hub).
 - Таблица опций **extension** для каждого `upstream` — **только** в
-  `scm/<upstream>/repository-selection-extensions.md` ([раскладка][adr-hub-extension]).
+  `scm/<upstream>/repository-selection-options.md`; маппинг на API — в
+  `scm/<upstream>/repository-selection-mapping/` ([раскладка][adr-hub-extension]).
 - Режим `--scm-search` несовместим с любым `--q*` после резолва.
 - В режиме `--scm-search` продуктовый `scope` к запросу в SCM **не** применяется.
 - `scope`: только `affiliated` или `all`; default `affiliated`; один только `scope` не
@@ -297,10 +301,11 @@ flowchart TD
 
 ## Не описывать здесь
 
-- Таблицы SCM-специфичных флагов и реализация `--scope` на API — [extension-спеки](#расширения-per-upstream).
-- REST-эндпоинты, пагинацию и маппинг полей API —
-  `scm/<upstream>/repository-enumeration.md` (не extension).
-- Полную схему нормализованной карточки репозитория.
+- Таблицы SCM-специфичных extension-флагов — [options per upstream](#options-per-upstream).
+- CLI → REST — `scm/<upstream>/repository-selection-mapping/`.
+- Базовый list, пагинация, схема карточки — `scm/<upstream>/base-enumeration.md`.
+- Клиентская фильтрация `--q*` — `scm/<upstream>/repository-enumeration/<parameter>.md`.
+- Полную схему карточки per SCM — только в `base-enumeration.md`, не здесь.
 - Пошаговые сценарии отдельных команд — `cli/<command>/`.
 - Реализацию в `application/`.
 - Локальный отбор рабочих копий.

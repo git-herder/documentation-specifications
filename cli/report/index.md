@@ -18,7 +18,7 @@ githerd [глобальные опции] report [опции SCM-отбора] [
 `--workspace` **игнорируется**.
 
 Критерии отбора (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--scope`; для GitLab
-ещё `--include-inactive` — [extension](../../scm/gitlab/repository-selection-extensions.md)) —
+ещё `--include-inactive` — [GitLab options](../../scm/gitlab/repository-selection-options.md)) —
 полный контракт в [scm-repository-selection.md](../../platform/scm-repository-selection.md), таблицы
 здесь **не** повторяют.
 
@@ -90,9 +90,9 @@ githerd [глобальные опции] report [опции SCM-отбора] [
    `--scm-search`), при необходимости дозагружает метаданные для `--qt` и `--qa`,
    отфильтровывает результат по `--qp`, `--qn`, `--qt` и `--qa`. Подробности шагов —
    в разделе [SCM-отбор](#scm-отбор).
-   - Какие HTTP-запросы уходят в GitHub и GitLab, описано в
-   [github/repository-enumeration.md](../../scm/github/repository-enumeration.md) и
-   [gitlab/repository-enumeration.md](../../scm/gitlab/repository-enumeration.md).
+   - HTTP: [base-enumeration](../../scm/github/base-enumeration.md) / GitLab-аналог,
+     [mapping](../../scm/github/repository-selection-mapping/index.md) per upstream;
+     клиентская фильтрация — [repository-enumeration/…/index.md](../../scm/github/repository-enumeration/index.md).
    - При ошибке обращения к API команда повторяет запрос столько раз, сколько задано
    глобальным `--retries-number`; когда повторы закончились, срабатывает глобальный
    `--on-error` ([глобальные параметры CLI](../index.md#повторы-и---on-error)). Общие
@@ -135,10 +135,10 @@ sequenceDiagram
 (перечисление, дозагрузка метаданных, локальная фильтрация) — в
 [scm-repository-selection.md](../../platform/scm-repository-selection.md).
 
-| `upstream` | Extension (CLI) | Запросы к API (enumeration) |
-| ---------- | --------------- | --------------------------- |
-| `github`   | [github/repository-selection-extensions.md](../../scm/github/repository-selection-extensions.md) | [github/repository-enumeration.md](../../scm/github/repository-enumeration.md) |
-| `gitlab`   | [gitlab/repository-selection-extensions.md](../../scm/gitlab/repository-selection-extensions.md) | [gitlab/repository-enumeration.md](../../scm/gitlab/repository-enumeration.md) |
+| `upstream` | Options | Base | Mapping | Enumeration |
+| ---------- | ------- | ---- | ------- | ----------- |
+| `github`   | [options](../../scm/github/repository-selection-options.md) | [base](../../scm/github/base-enumeration.md) | [mapping](../../scm/github/repository-selection-mapping/index.md) | [enumeration](../../scm/github/repository-enumeration/index.md) |
+| `gitlab`   | [options](../../scm/gitlab/repository-selection-options.md) | [base](../../scm/gitlab/base-enumeration.md) | [mapping](../../scm/gitlab/repository-selection-mapping/index.md) | [enumeration](../../scm/gitlab/repository-enumeration/index.md) |
 
 ## Режим вывода
 
@@ -233,6 +233,6 @@ githerd-report-${fs-timestamp}.json
 
 ## Не описывать здесь
 
-- REST и поля API — [enumeration](../../scm/github/repository-enumeration.md) по upstream.
+- REST — mapping и [base-enumeration](../../scm/github/base-enumeration.md) per upstream; клиентская фильтрация — [repository-enumeration/…/index.md](../../scm/github/repository-enumeration/index.md).
 - Полную схему карточки репозитория.
 - Код в `application/`.

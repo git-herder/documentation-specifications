@@ -29,6 +29,7 @@ SCM-адаптер **наполняет** карточку для каждого
 
 | Поле | Тип | Инварианты |
 | ---- | --- | ---------- |
+| `uid` | string **или** number (JSON) | Уникальный идентификатор репозитория **в пределах одного** подключения к SCM (резолв `upstream`, `host` и учётных данных профиля). **Не** используется в критериях `--q*`. JSON-тип и правило построения значения зависят от `upstream` — [ниже](#uid). |
 | `name` | UTF-8 string | Имя репозитория **без** префикса пути; пример `specifications`. |
 | `path` | UTF-8 string | Путь от **корня SCM-контекста** (иерархия namespace на платформе) до **родителя** `name`; сегменты через `/`. Пример: `snowbridge-projects/git-herder/documentation`. **`name` не повторяют** в конце `path`. |
 | `description` | UTF-8 string | Неограниченная длина. Если у SCM нет описания — **`""`**; поле **всегда** присутствует. |
@@ -37,13 +38,14 @@ SCM-адаптер **наполняет** карточку для каждого
 
 ## JSON
 
-Нормативная сериализация — один JSON-объект с **ровно** пятью ключами верхнего
-уровня: `name`, `path`, `description`, `labels`, `properties`. Типы — как в таблице.
+Нормативная сериализация — один JSON-объект с **ровно** шестью ключами верхнего
+уровня: `uid`, `name`, `path`, `description`, `labels`, `properties`. Типы — как в таблице.
 
-Пример:
+Пример (GitHub-подобный `uid` — строка):
 
 ```json
 {
+  "uid": "snowbridge-projects/git-herder/documentation/specifications",
   "name": "specifications",
   "path": "snowbridge-projects/git-herder/documentation",
   "description": "Прикладные спецификации Git Herder",
@@ -98,9 +100,24 @@ Per-SCM алгоритм проверки — `scm/<upstream>/repository-enumera
 
 Per-SCM алгоритм — `scm/<upstream>/repository-enumeration/qa.md`.
 
+### `uid`
+
+Стабильный идентификатор для дедупликации, журнала и внутренних ссылок в процессе
+Git Herder. Два репозитория с разными `uid` **не** считаются одним объектом; совпадение
+`uid` в одной выборке — одна и та же сущность на SCM.
+
+| `upstream` | JSON-тип `uid` | SSOT формы значения |
+| ---------- | -------------- | ------------------- |
+| `github` | string | [base-enumeration (GitHub)](../scm/github/base-enumeration.md#uid) |
+| `gitlab` | number | [base-enumeration (GitLab)](../scm/gitlab/base-enumeration.md#uid) |
+| иные | по спеке upstream | `scm/<upstream>/base-enumeration.md#uid` |
+
+Форма `uid` для каждого `upstream` задаётся **только** в `base-enumeration` (GitHub —
+строка из `path` и `name`; GitLab — id проекта из API).
+
 ## Инварианты
 
-- Все пять ключей верхнего уровня **обязательны** в каждой карточке.
+- Все шесть ключей верхнего уровня **обязательны** в каждой карточке.
 - `labels` и `properties` — объекты (не `null`); минимум `{}`.
 - Семантика полей карточки **не** дублируется в hub и в `repository-enumeration/*` —
   только ссылки на эту спеку.

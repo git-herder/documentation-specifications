@@ -33,7 +33,7 @@ SCM-адаптер **наполняет** карточку для каждого
 | `name` | UTF-8 string | Имя репозитория **без** префикса пути; пример `specifications`. |
 | `path` | UTF-8 string | Путь от **корня SCM-контекста** (иерархия namespace на платформе) до **родителя** `name`; сегменты через `/`. Пример: `snowbridge-projects/git-herder/documentation`. **`name` не повторяют** в конце `path`. |
 | `description` | UTF-8 string | Неограниченная длина. Если у SCM нет описания — **`""`**; поле **всегда** присутствует. |
-| `labels` | массив string | Каждый элемент — одна метка (тег, топик, лейбл или аналог на SCM) в нормализованном UTF-8 виде. Пустой массив `[]`, если меток нет. Порядок **не** нормативен; повторы допустимы. Как native API кладётся в строки — `base-enumeration` per `upstream`. |
+| `labels` | массив string | Каждый элемент — один **тег** (или native-аналог, сведённый к строке тега) в UTF-8. Пустой массив `[]`, если тегов нет. Порядок **не** нормативен; повторы допустимы. Маппинг native → строки — `base-enumeration` per `upstream`. |
 | `properties` | объект string → scalar | Ключ — UTF-8 string (имя property). Значение — ровно один scalar: string, number (JSON number), boolean или **date** (JSON string). **Date** в карточке — профиль **data-timestamp** ([ADR-26101704][adr-timestamp]). Пустой объект `{}`, если custom properties нет. |
 
 ## JSON
@@ -50,8 +50,8 @@ SCM-адаптер **наполняет** карточку для каждого
   "path": "snowbridge-projects/git-herder/documentation",
   "description": "Прикладные спецификации Git Herder",
   "labels": [
-    "team=Alpha",
-    "env=prod",
+    "foo",
+    "bar",
     "documentation"
   ],
   "properties": {
@@ -77,15 +77,10 @@ SCM-адаптер **наполняет** карточку для каждого
 
 ### `qt` и `labels`
 
-Условие `--qt` ([hub § qt][scm-repository-selection-qt]) проверяют по **элементам**
-массива `labels`. Адаптер добавляет в массив строки для всех native-источников класса
-«теги/топики/лейблы»; продуктовый OR на одной SCM — за счёт **нескольких** элементов
-или форм строк (маппинг — `base-enumeration`).
-
-Сопоставление строки условия `key=value` / `key!=value` с элементами — per-SCM
-`repository-enumeration/qt.md` (без дублирования таблицы операторов hub).
-
-Per-SCM алгоритм проверки — `scm/<upstream>/repository-enumeration/qt.md`.
+Критерий `--qt` — [hub § qt][scm-repository-selection-qt] (строгое наличие / отсутствие
+тега; разбор argv только в hub). Поле карточки — массив `labels`. Алгоритм
+сопоставления после разбора условий — `scm/<upstream>/repository-enumeration/qt.md`
+(без дублирования hub).
 
 ### `qa` и `properties`
 
@@ -138,5 +133,5 @@ Git Herder. Два репозитория с разными `uid` **не** сч�
 [adr-hub-extension]: ../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
 [adr-timestamp]: ../../../ADR/ADR-26101704-timestamp-formats.md
 [scm-repository-selection]: scm-repository-selection.md
-[scm-repository-selection-qt]: scm-repository-selection.md#qt-теги-топики-лейблы
+[scm-repository-selection-qt]: scm-repository-selection.md#qt-теги
 [scm-repository-selection-qa]: scm-repository-selection.md#qa-атрибуты

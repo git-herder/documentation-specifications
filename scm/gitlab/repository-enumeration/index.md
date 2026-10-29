@@ -9,7 +9,7 @@
 | -------- | --- | ---- | ---- |
 | `qp` | [§ qp/qn][scm-repository-selection-qp-qn] | [qp.md](qp.md) | `path` |
 | `qn` | [§ qp/qn][scm-repository-selection-qp-qn] | [qn.md](qn.md) | `name` |
-| `qt` | [§ qt][scm-repository-selection-qt] | [qt.md](qt.md) | tags, labels |
+| `qt` | [§ qt][scm-repository-selection-qt] | [qt.md](qt.md) | `labels` |
 | `qa` | [§ qa][scm-repository-selection-qa] | [qa.md](qa.md) | custom_properties |
 
 `scope`, `include-inactive`, `scm-search` — только mapping.
@@ -21,6 +21,6 @@
 <!-- LINKS -->
 [scm-repository-selection]: ../../../platform/scm-repository-selection.md
 [scm-repository-selection-qp-qn]: ../../../platform/scm-repository-selection.md#qp-и-qn
-[scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги-топики-лейблы
+[scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги
 [scm-repository-selection-qa]: ../../../platform/scm-repository-selection.md#qa-атрибуты
 [adr-local-eval]: ../../../../../ADR/ADR-26102001-scm-repository-selection-evaluation.md

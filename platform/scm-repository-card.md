@@ -33,7 +33,7 @@ SCM-адаптер **наполняет** карточку для каждого
 | `name` | UTF-8 string | Имя репозитория **без** префикса пути; пример `specifications`. |
 | `path` | UTF-8 string | Путь от **корня SCM-контекста** (иерархия namespace на платформе) до **родителя** `name`; сегменты через `/`. Пример: `snowbridge-projects/git-herder/documentation`. **`name` не повторяют** в конце `path`. |
 | `description` | UTF-8 string | Неограниченная длина. Если у SCM нет описания — **`""`**; поле **всегда** присутствует. |
-| `labels` | объект string → string | Ключ и значение — неограниченные UTF-8 **строки**; значение **не** number, boolean или date. Пустой объект `{}`, если меток нет. Один JSON-ключ — одно значение; коллизии при слиянии нескольких native-источников — в `base-enumeration` per `upstream`. |
+| `labels` | массив string | Каждый элемент — одна метка (тег, топик, лейбл или аналог на SCM) в нормализованном UTF-8 виде. Пустой массив `[]`, если меток нет. Порядок **не** нормативен; повторы допустимы. Как native API кладётся в строки — `base-enumeration` per `upstream`. |
 | `properties` | объект string → scalar | Ключ — UTF-8 string (имя property). Значение — ровно один scalar: string, number (JSON number), boolean или **date** (JSON string). **Date** в карточке — профиль **data-timestamp** ([ADR-26101704][adr-timestamp]). Пустой объект `{}`, если custom properties нет. |
 
 ## JSON
@@ -49,10 +49,11 @@ SCM-адаптер **наполняет** карточку для каждого
   "name": "specifications",
   "path": "snowbridge-projects/git-herder/documentation",
   "description": "Прикладные спецификации Git Herder",
-  "labels": {
-    "team": "Alpha",
-    "env": "prod"
-  },
+  "labels": [
+    "team=Alpha",
+    "env=prod",
+    "documentation"
+  ],
   "properties": {
     "tier": "gold",
     "reviewers": 3,
@@ -76,11 +77,13 @@ SCM-адаптер **наполняет** карточку для каждого
 
 ### `qt` и `labels`
 
-Условие `--qt key=value` (или `key!=value`) смотрит на map `labels`: ключ **должен
-присутствовать** в объекте; значение сравнивается с `labels[key]` как со **строкой**
-(см. hub). Продуктовый OR между несколькими native-реализациями класса «теги/топики/лейблы»
-на одной SCM ([hub § qt][scm-repository-selection-qt]) достигается тем, как адаптер
-**заполняет** `labels` до фильтрации (per-SCM правила — `base-enumeration`).
+Условие `--qt` ([hub § qt][scm-repository-selection-qt]) проверяют по **элементам**
+массива `labels`. Адаптер добавляет в массив строки для всех native-источников класса
+«теги/топики/лейблы»; продуктовый OR на одной SCM — за счёт **нескольких** элементов
+или форм строк (маппинг — `base-enumeration`).
+
+Сопоставление строки условия `key=value` / `key!=value` с элементами — per-SCM
+`repository-enumeration/qt.md` (без дублирования таблицы операторов hub).
 
 Per-SCM алгоритм проверки — `scm/<upstream>/repository-enumeration/qt.md`.
 
@@ -118,7 +121,7 @@ Git Herder. Два репозитория с разными `uid` **не** сч�
 ## Инварианты
 
 - Все шесть ключей верхнего уровня **обязательны** в каждой карточке.
-- `labels` и `properties` — объекты (не `null`); минимум `{}`.
+- `labels` — массив (не `null`); минимум `[]`. `properties` — объект (не `null`); минимум `{}`.
 - Семантика полей карточки **не** дублируется в hub и в `repository-enumeration/*` —
   только ссылки на эту спеку.
 

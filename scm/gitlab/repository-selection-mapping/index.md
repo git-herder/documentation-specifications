@@ -20,6 +20,6 @@ CLI → HTTP. [base-enumeration.md](../base-enumeration.md),
 [scm-repository-selection]: ../../../platform/scm-repository-selection.md
 [scm-repository-selection-scope]: ../../../platform/scm-repository-selection.md#scope
 [scm-repository-selection-scm-search]: ../../../platform/scm-repository-selection.md#scm-search
-[scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги-топики-лейблы
+[scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги
 [scm-repository-selection-qa]: ../../../platform/scm-repository-selection.md#qa-атрибуты
 [options-include-inactive]: ../repository-selection-options.md#include-inactive

@@ -2,18 +2,39 @@
 
 ## Контракт
 
-[hub § qt][scm-repository-selection-qt] (OR tag/label внутри одного условия — hub).
+[hub § qt][scm-repository-selection-qt]. Смотрим поле `labels` карточки
+[scm-repository-card][scm-repository-card].
+
+**Наличие** (`--qt имя` без `=null`) уже отфильтровано на list — параметр `topic` в
+[mapping/qt.md](../repository-selection-mapping/qt.md). Здесь только **отсутствие**
+(`--qt имя=null`).
 
 ## Вход
 
-`tags`, `labels` — [base-enumeration.md](../base-enumeration.md).
+Карточки после list; если после резолва был `qt` — после дозагрузки labels по
+[mapping/qt.md](../repository-selection-mapping/qt.md).
 
 ## Алгоритм
 
-Пример hub: `--qt team=Alpha` ⇔ `(tag team=Alpha) OR (label team=Alpha)` на полях
-карточки. Несколько `--qt` — AND.
+Для каждого `--qt` после резолва (как разбирать значение — hub § qt):
 
-REST — [mapping/qt.md](../repository-selection-mapping/qt.md).
+| Вид условия | На клиенте |
+| ----------- | ---------- |
+| Наличие | Ничего не проверять |
+| Отсутствие (`=null`) | Пропустить репозиторий, если *имя* **есть** в `labels`; иначе оставить |
+
+Сравнение *имени* с элементами `labels` — **точное**, с учётом регистра.
+
+Несколько `--qt` между собой — **AND** (hub). То же AND с `--qp`, `--qn`, `--qa`.
+
+### Пример
+
+```text
+--qt foo --qt bar=null
+```
+
+List с `topic`, где есть urlencoded `foo`, и в `labels` нет строки `bar`.
 
 <!-- LINKS -->
-[scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги-топики-лейблы
+[scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги
+[scm-repository-card]: ../../../platform/scm-repository-card.md

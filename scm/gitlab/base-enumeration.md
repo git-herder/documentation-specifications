@@ -89,7 +89,7 @@ current = min(page × per_page, X-Total)
 | `name`        | `name`                | Значение поля `name` из API как UTF-8 string                                                                                                                                    |
 | `path`        | `path_with_namespace` | Значение карточки `path` = `path_with_namespace` **без последнего** сегмента (slug/path проекта); сегменты через `/`. Если в `path_with_namespace` один сегмент — `path` = `""` |
 | `description` | `description`         | Если в API null или поле отсутствует — `""`                                                                                                                                     |
-| `labels`      | `topics`              | Каждый элемент массива `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]`                                                                                 |
+| `labels`      | `topics`              | После base list: каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]`. Если после резолва задан `qt`, итоговое `labels` — только после enrich в [mapping/qt.md](repository-selection-mapping/qt.md) (не смешивать с topics). Без `qt` enrich не выполняется. |
 | `properties`  | —                     | На шаге только base list — `{}`. Наполнение из `custom_properties` — REST в [mapping/qa.md](repository-selection-mapping/qa.md)                                                 |
 
 ### uid {#uid}

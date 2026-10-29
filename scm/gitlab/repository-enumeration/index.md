@@ -10,7 +10,7 @@
 | `qp` | [§ qp/qn][scm-repository-selection-qp-qn] | [qp.md](qp.md) | `path` |
 | `qn` | [§ qp/qn][scm-repository-selection-qp-qn] | [qn.md](qn.md) | `name` |
 | `qt` | [§ qt][scm-repository-selection-qt] | [qt.md](qt.md) | `labels` |
-| `qa` | [§ qa][scm-repository-selection-qa] | [qa.md](qa.md) | custom_properties |
+| `qa` | [§ qa][scm-repository-selection-qa] | [qa.md](qa.md) | `properties` |
 
 `scope`, `include-inactive`, `scm-search` — только mapping.
 

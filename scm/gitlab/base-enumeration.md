@@ -19,8 +19,7 @@ query — [repository-selection-mapping/](repository-selection-mapping/index.md)
 GitLab-адаптер перечисляет репозитории запросами `GET /api/v4/projects` (относительно
 base URL инстанса из профиля), собирает все страницы ответа и для каждого элемента JSON
 наполняет поля [карточки](../../platform/scm-repository-card.md) по правилам ниже. Дополнительные query на
-тот же list для `scope` и `include-inactive` — [§ membership](#query-membership-scope) и
-[§ active](#query-active-filter); продуктовый маппинг значений CLI — только в
+тот же list для `scope` и `include-inactive`; продуктовый маппинг значений CLI — только в
 [mapping/](repository-selection-mapping/index.md).
 
 ## Базовый эндпоинт
@@ -90,7 +89,7 @@ current = min(page × per_page, X-Total)
 | `path`        | `path_with_namespace` | Значение карточки `path` = `path_with_namespace` **без последнего** сегмента (slug/path проекта); сегменты через `/`. Если в `path_with_namespace` один сегмент — `path` = `""` |
 | `description` | `description`         | Если в API null или поле отсутствует — `""`                                                                                                                                     |
 | `labels`      | `topics`              | После base list: каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]`. Если после резолва задан `qt`, итоговое `labels` — только после enrich в [mapping/qt.md](repository-selection-mapping/qt.md) (не смешивать с topics). Без `qt` enrich не выполняется. |
-| `properties`  | —                     | На шаге только base list — `{}`. Наполнение из `custom_properties` — REST в [mapping/qa.md](repository-selection-mapping/qa.md)                                                 |
+| `properties`  | —                     | На шаге только base list — `{}`. Наполнение из `GET …/custom_attributes` — [mapping/qa.md](repository-selection-mapping/qa.md)                                                 |
 
 ### uid {#uid}
 

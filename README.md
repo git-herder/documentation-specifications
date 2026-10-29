@@ -48,6 +48,7 @@ specifications/
 | Журнал выполнения, JSON, sinks, redaction | [platform/logging.md](platform/logging.md) | актуально |
 | Профили, резолв конфигурации (CLI, YAML, builtin) | [platform/profiles.md](platform/profiles.md) | актуально |
 | Критерии SCM-отбора, переносимые (`--qp`, `--qn`, `--qt`, `--qa`, `--scm-search`, `--scope`) | [platform/scm-repository-selection.md](platform/scm-repository-selection.md) | актуально |
+| Обобщённая карточка репозитория (cross-SCM) | [platform/scm-repository-card.md](platform/scm-repository-card.md) | актуально |
 | SCM-отбор, options GitHub | [scm/github/repository-selection-options.md](scm/github/repository-selection-options.md) | актуально |
 | SCM-отбор, options GitLab | [scm/gitlab/repository-selection-options.md](scm/gitlab/repository-selection-options.md) | актуально |
 | SCM-отбор, mapping GitHub (реестр) | [scm/github/repository-selection-mapping/index.md](scm/github/repository-selection-mapping/index.md) | актуально |

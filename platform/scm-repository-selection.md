@@ -68,8 +68,8 @@ Extension-флаги (только для одного `upstream` после р�
 
 | `upstream` | Options | Base list / карточка | Mapping | Enumeration (клиент) |
 | ---------- | ------- | -------------------- | ------- | ---------------------- |
-| `github` | [options](../scm/github/repository-selection-options.md) | [base-enumeration](../scm/github/base-enumeration.md) | [mapping/index](../scm/github/repository-selection-mapping/index.md) | [enumeration/index](../scm/github/repository-enumeration/index.md) |
-| `gitlab` | [options](../scm/gitlab/repository-selection-options.md) | [base-enumeration](../scm/gitlab/base-enumeration.md) | [mapping/index](../scm/gitlab/repository-selection-mapping/index.md) | [enumeration/index](../scm/gitlab/repository-enumeration/index.md) |
+| `github` | [options](../scm/github/repository-selection-options.md) | [base-enumeration](../scm/github/base-enumeration.md) (+ [карточка][scm-repository-card]) | [mapping/index](../scm/github/repository-selection-mapping/index.md) | [enumeration/index](../scm/github/repository-enumeration/index.md) |
+| `gitlab` | [options](../scm/gitlab/repository-selection-options.md) | [base-enumeration](../scm/gitlab/base-enumeration.md) (+ [карточка][scm-repository-card]) | [mapping/index](../scm/gitlab/repository-selection-mapping/index.md) | [enumeration/index](../scm/gitlab/repository-enumeration/index.md) |
 
 **Mapping** — CLI → REST; **enumeration** — фильтрация выборки на клиенте (`qp`, `qn`,
 `qt`, `qa`); [ADR-26102201][adr-hub-extension].
@@ -303,9 +303,10 @@ flowchart TD
 
 - Таблицы SCM-специфичных extension-флагов — [options per upstream](#options-per-upstream).
 - CLI → REST — `scm/<upstream>/repository-selection-mapping/`.
-- Базовый list, пагинация, схема карточки — `scm/<upstream>/base-enumeration.md`.
+- Базовый list, пагинация — `scm/<upstream>/base-enumeration.md`.
+- Cross-SCM **имена и типы** полей карточки — [scm-repository-card.md](scm-repository-card.md); наполнение из API — `scm/<upstream>/base-enumeration.md`.
 - Клиентская фильтрация `--q*` — `scm/<upstream>/repository-enumeration/<parameter>.md`.
-- Полную схему карточки per SCM — только в `base-enumeration.md`, не здесь.
+- Per-SCM маппинг native → карточка — только в `base-enumeration.md`, не здесь.
 - Пошаговые сценарии отдельных команд — `cli/<command>/`.
 - Реализацию в `application/`.
 - Локальный отбор рабочих копий.
@@ -317,3 +318,4 @@ flowchart TD
 [adr-saas-guard]: ../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md
 [adr-saas-guard-scope]: ../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md#scope-public-saas
 [adr-hub-extension]: ../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
+[scm-repository-card]: scm-repository-card.md

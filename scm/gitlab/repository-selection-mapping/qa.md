@@ -44,9 +44,11 @@ CLI → HTTP. Смысл `--qa` и разбор argv — [hub § qa][scm-reposit
 
 ## Дозагрузка `properties`
 
-Сработает, если после резолва был хотя бы один `--qa`. Когда программа **собрала**
-весь список проектов (все страницы list), для **каждого** репозитория из этого
-списка по очереди выполнит:
+Сработает, если после резолва был хотя бы один `--qa`.
+
+В цикле list проектов: после **каждой** полученной страницы (`GET /api/v4/projects`),
+**до** запроса следующей страницы, для **каждого** репозитория на этой странице
+выполнить шаги 1–5 ниже.
 
 1. Отправляет запрос `GET /api/v4/projects/:id/custom_attributes`, подставив в
    `:id` числовой `uid` из карточки этого проекта.
@@ -94,9 +96,9 @@ CLI → HTTP. Смысл `--qa` и разбор argv — [hub § qa][scm-reposit
 
 ## Порядок
 
-1. List: `scope`, `include-inactive`, при необходимости `custom_attributes[…]` для `=`.
-2. Enrich custom attributes, если после резолва был `qa`.
-3. Фильтры на клиенте — [enumeration/](../repository-enumeration/index.md).
+1. List постранично: `scope`, `include-inactive`, при необходимости `custom_attributes[…]` для `=`.
+2. На **каждой** странице list — enrich custom attributes (раздел выше), если после резолва был `qa`.
+3. После всех страниц list — фильтры на клиенте — [enumeration/](../repository-enumeration/index.md).
 
 ## Не здесь
 

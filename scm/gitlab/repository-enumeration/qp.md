@@ -10,8 +10,9 @@
 
 ## Вход
 
-Карточки после list; если в резолве были `qt` или `qa` — после их дозагрузки по
-mapping.
+Карточки после list; если в резолве были `qt` или `qa` — после постраничного enrich
+по mapping ([qa.md](../repository-selection-mapping/qa.md),
+[qt.md](../repository-selection-mapping/qt.md)).
 
 ## Алгоритм
 

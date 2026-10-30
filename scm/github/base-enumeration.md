@@ -16,7 +16,8 @@ query — [repository-selection-mapping/][mapping-index].
 GitHub-адаптер перечисляет репозитории запросами `GET /search/repositories` (относительно
 API base из профиля), собирает все страницы ответа и для каждого элемента массива `items`
 наполняет поля [карточки][scm-repository-card] по правилам ниже. Параметр `q` собирается по
-[mapping qp][mapping-qp] и [mapping qn][mapping-qn]; продуктовый маппинг `scope` — [mapping scope][mapping-scope].
+[mapping index § сборка q][mapping-q-build]; участники — `qp`, `qn`, `qa` с `=`; не `qt`.
+Продуктовый маппинг `scope` — [mapping scope][mapping-scope].
 
 ## Базовый эндпоинт
 
@@ -43,9 +44,14 @@ Query-параметры list (кроме правил сборки `q`):
 | Ограничение | Правило |
 | ----------- | ------- |
 | `--qp`, `--qn` | **Не** регэкспы: только строки из символов `A`–`Z`, `a`–`z`, `0`–`9`, `_`, `-`. Иначе — ошибка до HTTP, exit `1` ([hub § ошибки][scm-repository-selection-errors]). |
+| Пустой `q` | Если после резолва нет фрагментов для `q` (например, только `--qt`) — ошибка до HTTP, exit `1` ([mapping § сборка q][mapping-q-build], hub). |
 | `--scope` | **Не** влияет на query `GET /search/repositories` ([mapping scope][mapping-scope]). Рекомендуется задавать `--qp` с **точным** login user или organization. |
 
-Клиентская проверка `qp` / `qn` после list — [repository-enumeration/][enumeration-index] (без регэкп).
+Лимит выдачи Search API — [github-search-repositories].
+
+Клиентская фильтрация: `--qt`, `--qa` (частично) — [enumeration/][enumeration-index].
+`--qp`, `--qn` — только Search `q` ([mapping/][mapping-index]), см.
+[enumeration § назначение][enumeration-scope].
 
 ## Пагинация
 
@@ -95,7 +101,7 @@ GitHub для list использует **keyset-based** пагинацию че
 | `path`        | `full_name`          | `full_name` **без последнего** сегмента (`name`); сегменты через `/`. Если в `full_name` один сегмент — `path` = `""` |
 | `description` | `description`        | null или отсутствие — `""` |
 | `labels`      | `topics`             | Каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]` |
-| `properties`  | —                    | На шаге только base list — `{}`. Наполнение при `--qa` — mapping `qa` (когда спека появится) |
+| `properties`  | —                    | На шаге только base list — `{}`. Наполнение при `--qa` — [mapping qa][mapping-qa] |
 
 ### uid {#uid}
 
@@ -107,8 +113,8 @@ GitHub для list использует **keyset-based** пагинацию че
 
 - Таблицы переносимых и extension-опций CLI — [hub][scm-repository-selection] и
   [repository-selection-options.md][github-options].
-- Клиентская фильтрация `--qp`, `--qn`, `--qt`, `--qa` —
-  [repository-enumeration/][enumeration-index].
+- Клиентская фильтрация `--qt`, `--qa` (и реестр «только client-side») —
+  [repository-enumeration/][enumeration-index]. `--qp`, `--qn` — только mapping.
 - Пошаговые HTTP enrich (кроме однострочных отсылок выше) — [mapping/][mapping-index].
 - Реализацию в `application/`.
 
@@ -120,10 +126,13 @@ GitHub для list использует **keyset-based** пагинацию че
 [repository-selection-capability]: ../../../product-intent/capability/platform/repository-selection.md
 [adr-hub-extension]: ../../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
 [mapping-index]: repository-selection-mapping/index.md
+[mapping-q-build]: repository-selection-mapping/index.md#сборка-q
 [mapping-qp]: repository-selection-mapping/qp.md
 [mapping-qn]: repository-selection-mapping/qn.md
+[mapping-qa]: repository-selection-mapping/qa.md
 [mapping-scope]: repository-selection-mapping/scope.md
 [enumeration-index]: repository-enumeration/index.md
+[enumeration-scope]: repository-enumeration/index.md#назначение-каталога
 [github-options]: repository-selection-options.md
 [options-on-limit-exceeded]: repository-selection-options.md#on-limit-exceeded
 [github-pagination-link]: https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api?apiVersion=2026-03-10#using-link-headers

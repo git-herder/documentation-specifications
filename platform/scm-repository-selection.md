@@ -153,6 +153,15 @@ clone:
 ([ADR-26102001][adr-local-eval]); per-SCM алгоритм — `scm/<upstream>/repository-enumeration/qp.md`
 и `qn.md`.
 
+#### GitHub (`upstream=github`)
+
+Критерии `--qp` и `--qn` **не** оцениваются регэкпом/подстрокой на карточке: отбор
+только через query `q` базового `GET /search/repositories`
+([github/repository-selection-mapping/index.md § сборка q][github-mapping-q-build]).
+Файлов `qp`/`qn` в [repository-enumeration/][github-enumeration-index] **нет** (только
+server-side). Значения `--qp`/`--qn` для Search — литералы из ограниченного алфавита
+([github base-enumeration § ограничения API][github-base-limits]).
+
 ### `qt` (теги) {#qt-теги}
 
 `--qt` задаёт условия только по **тегам** (признак «есть такой тег» / «нет такого
@@ -292,7 +301,9 @@ flowchart TD
 2. Проверка: задан хотя бы один критерий; нет конфликта `scm-search` + `--q*`.
 3. Ветка **`--scm-search`** — один запрос в адаптер; иначе перечисление с учётом
    `--scope` и extension-модификаторов, обогащение метаданных для `qt` / `qa`, локальная
-   фильтрация `qp`, `qn`, `qt`, `qa` ([ADR-26102001][adr-local-eval]).
+   фильтрация `qp`, `qn`, `qt`, `qa` ([ADR-26102001][adr-local-eval]). На GitHub
+   `--qp`/`--qn` участвуют в **mapping** (Search `q`), а не в локальной оценке hub
+   выше.
 
 ## Ошибки и коды выхода
 
@@ -309,6 +320,8 @@ flowchart TD
 | Неверный синтаксис значения `--qt` (в т.ч. операторы `<` … `>=`) | Ошибка разбора значения. |
 | Неверный синтаксис значения `--qa` | Ошибка разбора значения. |
 | `--scope` не `affiliated` и не `all` | Ошибка контракта. |
+| `upstream=github`, режим `--q*`, после резолва **нет** server-side фрагмента для `q` (только `--qt`, или только `--qa` без `=`, и т.п.) | Ошибка до HTTP: нужен `--qp`, `--qn` или `--qa` с `=` ([github mapping § сборка q][github-mapping-q-build]). |
+| `upstream=github`, неверный алфавит значения `--qp` или `--qn` | Ошибка до HTTP, exit `1` ([github base-enumeration § ограничения API][github-base-limits]). |
 
 Итоговый набор **пуст** после успешного отбора — поведение **команды** (ошибка,
 предупреждение или успех с нулём объектов); здесь не фиксируется.
@@ -328,7 +341,8 @@ flowchart TD
 - `scope`: только `affiliated` или `all`; default `affiliated`; один только `scope` не
   критерий отбора.
 - Все условия `--q*` после резолва связаны **AND**.
-- `qp` / `qn`: регэкп при успешной компиляции, иначе подстрока.
+- `qp` / `qn`: регэкп при успешной компиляции, иначе подстрока (кроме GitHub — Search
+  `q`, см. [§ qp и qn — GitHub](#qp-и-qn)).
 - `qt`: только **наличие** (аргумент без `=`) или **отсутствие** (суффикс `=null`,
   `null` без учёта регистра); иное `=` в значении — ошибка разбора; пустое имя тега —
   ошибка разбора.
@@ -357,3 +371,6 @@ flowchart TD
 [adr-saas-guard-scope]: ../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md#scope-public-saas
 [adr-hub-extension]: ../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
 [scm-repository-card]: scm-repository-card.md
+[github-mapping-q-build]: ../scm/github/repository-selection-mapping/index.md#сборка-q
+[github-enumeration-index]: ../scm/github/repository-enumeration/index.md
+[github-base-limits]: ../scm/github/base-enumeration.md#ограничения-api

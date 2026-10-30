@@ -53,7 +53,7 @@ specifications/
 | SCM-отбор, options GitLab | [scm/gitlab/repository-selection-options.md](scm/gitlab/repository-selection-options.md) | актуально |
 | SCM-отбор, mapping GitHub (реестр) | [scm/github/repository-selection-mapping/index.md](scm/github/repository-selection-mapping/index.md) | актуально |
 | SCM-отбор, mapping GitLab (реестр) | [scm/gitlab/repository-selection-mapping/index.md](scm/gitlab/repository-selection-mapping/index.md) | актуально |
-| SCM-отбор, base enumeration GitHub | [scm/github/base-enumeration.md](scm/github/base-enumeration.md) | каркас |
+| SCM-отбор, base enumeration GitHub | [scm/github/base-enumeration.md](scm/github/base-enumeration.md) | актуально |
 | SCM-отбор, base enumeration GitLab | [scm/gitlab/base-enumeration.md](scm/gitlab/base-enumeration.md) | каркас |
 | SCM-отбор, клиентская фильтрация GitHub (реестр) | [scm/github/repository-enumeration/index.md](scm/github/repository-enumeration/index.md) | актуально |
 | SCM-отбор, клиентская фильтрация GitLab (реестр) | [scm/gitlab/repository-enumeration/index.md](scm/gitlab/repository-enumeration/index.md) | актуально |

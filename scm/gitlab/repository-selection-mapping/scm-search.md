@@ -73,9 +73,9 @@ mapping не используют.
 При `scope=projects` каждый элемент ответа — объект проекта (см. Search API).
 
 Для **каждого** элемента **наполняет** карточку по
-[base-enumeration § карточка][base-enumeration-card] (как после list). Поле
-`labels` — из `topics` ответа; `properties` = `{}` (enrich `qa` в этой ветке
-нет).
+[base-enumeration § карточка][base-enumeration-card]. Поле
+`labels` — из `topics` ответа; `properties` = `{}` (ветка `scm-search` не использует
+[mapping/qa.md](qa.md)).
 
 ## Ошибки HTTP
 

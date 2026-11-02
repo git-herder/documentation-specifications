@@ -14,9 +14,7 @@
 
 `scope`, `include-inactive`, `scm-search` — только mapping.
 
-## Порядок
-
-Локальные фильтры после list + mapping enrich; AND по hub.
+Композиция условий между файлами каталога — **AND** ([hub][scm-repository-selection]).
 
 <!-- LINKS -->
 [scm-repository-selection]: ../../../platform/scm-repository-selection.md

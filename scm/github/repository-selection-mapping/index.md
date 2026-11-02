@@ -50,16 +50,6 @@ SSOT строки `q` для базового list `GET /search/repositories`
 Лимит выдачи Search API (~1000 результатов) — поведение GitHub;
 [документация search/repositories][github-search-repositories].
 
-## Порядок pipeline (режим `--q*`)
-
-1. Резолв; сборка и проверка `q` (раздел выше).
-2. List: все страницы `GET /search/repositories` с одним и тем же `q` (пагинация —
-   [base-enumeration § пагинация][base-enumeration-pagination]).
-3. **На каждую** полученную страницу `items`: если после резолва был хотя бы один
-   `--qa` — [enrich properties](qa.md#дозагрузка-properties) для **каждой** карточки
-   этой страницы, затем запрос следующей страницы list.
-4. Клиентская фильтрация — [enumeration/](../repository-enumeration/index.md).
-
 `scope` на `q` и базовый list **не** влияет — [scope.md](scope.md).
 
 ## Не здесь
@@ -77,6 +67,5 @@ SSOT строки `q` для базового list `GET /search/repositories`
 [scm-repository-selection-errors]: ../../../platform/scm-repository-selection.md#ошибки-и-коды-выхода
 [scm-repository-card]: ../../../platform/scm-repository-card.md
 [base-enumeration-limits]: ../base-enumeration.md#ограничения-api
-[base-enumeration-pagination]: ../base-enumeration.md#пагинация
 [base-enumeration-card]: ../base-enumeration.md#карточка-репозитория
 [github-search-repositories]: https://docs.github.com/en/rest/search/search?apiVersion=2026-03-10#search-repositories

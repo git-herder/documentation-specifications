@@ -10,10 +10,10 @@
 ([mapping/qa.md](../repository-selection-mapping/qa.md)); на клиенте их **не**
 проверяем повторно.
 
-## Вход
+## Данные на карточке
 
-Карточки после list. Если в резолве был `qa` — после enrich по
-[mapping/qa.md](../repository-selection-mapping/qa.md).
+Поле **`properties`**: при резолве `qa` — [mapping/qa.md](../repository-selection-mapping/qa.md);
+иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм
 
@@ -35,9 +35,9 @@
 --qa team=Alpha --qa tier>=gold
 ```
 
-На list уходит `custom_attributes[team]=Alpha` (urlencoded). Enrich — для всех
-проектов из list. На клиенте остаётся только проверка `tier>=gold` в
-`properties`.
+На list уходит `custom_attributes[team]=Alpha` (urlencoded). **`properties`** для
+проверки `tier>=gold` — по [mapping/qa.md](../repository-selection-mapping/qa.md).
+На клиенте остаётся только проверка `tier>=gold` в `properties`.
 
 <!-- LINKS -->
 [scm-repository-selection-qa]: ../../../platform/scm-repository-selection.md#qa-атрибуты

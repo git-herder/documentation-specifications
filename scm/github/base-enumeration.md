@@ -1,7 +1,7 @@
 # Базовое перечисление репозиториев (GitHub)
 
 SSOT базового HTTP list репозиториев GitHub для [SCM-отбора][scm-repository-selection] в режиме
-`--q*`. Карточка после list — [scm-repository-card][scm-repository-card]; маппинг CLI →
+`--q*`. Наполнение карточки из ответа list — [scm-repository-card][scm-repository-card]; маппинг CLI →
 query — [repository-selection-mapping/][mapping-index].
 
 ## Трассировка вверх
@@ -92,7 +92,8 @@ GitHub для list использует **keyset-based** пагинацию че
 ## Карточка репозитория {#карточка-репозитория}
 
 Имена и типы полей карточки — только [scm-repository-card.md][scm-repository-card]. Ниже —
-наполнение из **элемента** массива `items` ответа `GET /search/repositories` (до mapping-enrich).
+наполнение из **элемента** массива `items` ответа `GET /search/repositories` (поля, которые
+задаёт только этот ответ; дозагрузки — [mapping/][mapping-index]).
 
 | Карточка      | Поле элемента GitHub | Правило |
 | ------------- | -------------------- | ------- |
@@ -101,7 +102,7 @@ GitHub для list использует **keyset-based** пагинацию че
 | `path`        | `full_name`          | `full_name` **без последнего** сегмента (`name`); сегменты через `/`. Если в `full_name` один сегмент — `path` = `""` |
 | `description` | `description`        | null или отсутствие — `""` |
 | `labels`      | `topics`             | Каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]` |
-| `properties`  | —                    | На шаге только base list — `{}`. Наполнение при `--qa` — [mapping qa][mapping-qa] |
+| `properties`  | —                    | Из ответа list — `{}`. При `--qa` — [mapping qa][mapping-qa] |
 
 ### uid {#uid}
 
@@ -115,7 +116,7 @@ GitHub для list использует **keyset-based** пагинацию че
   [repository-selection-options.md][github-options].
 - Клиентская фильтрация `--qt`, `--qa` (и реестр «только client-side») —
   [repository-enumeration/][enumeration-index]. `--qp`, `--qn` — только mapping.
-- Пошаговые HTTP enrich (кроме однострочных отсылок выше) — [mapping/][mapping-index].
+- Пошаговые HTTP-дозагрузки полей карточки (кроме однострочных отсылок выше) — [mapping/][mapping-index].
 - Реализацию в `application/`.
 
 <!-- LINKS -->

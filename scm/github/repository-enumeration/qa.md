@@ -10,10 +10,10 @@
 ([mapping/qa.md](../repository-selection-mapping/qa.md)); на клиенте их **не**
 проверяем повторно.
 
-## Вход
+## Данные на карточке
 
-Карточки после полного list и постраничного enrich по
-[mapping/qa.md](../repository-selection-mapping/qa.md), если после резолва был `qa`.
+Поле **`properties`**: при резолве `qa` — по [mapping/qa.md](../repository-selection-mapping/qa.md);
+иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм
 

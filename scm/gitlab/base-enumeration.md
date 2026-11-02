@@ -1,7 +1,7 @@
 # Базовое перечисление репозиториев (GitLab)
 
 SSOT базового HTTP list проектов GitLab для [SCM-отбора](../../platform/scm-repository-selection.md) в режиме
-`--q*`. Карточка после list — [scm-repository-card](../../platform/scm-repository-card.md); маппинг CLI →
+`--q*`. Наполнение карточки из ответа list — [scm-repository-card](../../platform/scm-repository-card.md); маппинг CLI →
 query — [repository-selection-mapping/](repository-selection-mapping/index.md).
 
 Отдельная ветка API для `--scm-search` — [scm-search.md](repository-selection-mapping/scm-search.md),
@@ -80,7 +80,8 @@ current = min(page × per_page, X-Total)
 ## Карточка репозитория
 
 Имена и типы полей карточки — только [scm-repository-card.md](../../platform/scm-repository-card.md). Ниже —
-наполнение из **элемента** JSON-массива ответа `GET /api/v4/projects` (до mapping-enrich).
+наполнение из **элемента** JSON-массива ответа `GET /api/v4/projects` (поля, которые
+задаёт только этот ответ; дозагрузки — [mapping/](repository-selection-mapping/index.md)).
 
 | Карточка      | Поле проекта GitLab   | Правило                                                                                                                                                                         |
 | ------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -88,8 +89,8 @@ current = min(page × per_page, X-Total)
 | `name`        | `name`                | Значение поля `name` из API как UTF-8 string                                                                                                                                    |
 | `path`        | `path_with_namespace` | Значение карточки `path` = `path_with_namespace` **без последнего** сегмента (slug/path проекта); сегменты через `/`. Если в `path_with_namespace` один сегмент — `path` = `""` |
 | `description` | `description`         | Если в API null или поле отсутствует — `""`                                                                                                                                     |
-| `labels`      | `topics`              | После base list: каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]`. Если после резолва задан `qt`, итоговое `labels` — только после enrich в [mapping/qt.md](repository-selection-mapping/qt.md) (не смешивать с topics). Без `qt` enrich не выполняется. |
-| `properties`  | —                     | На шаге только base list — `{}`. Наполнение из `GET …/custom_attributes` — [mapping/qa.md](repository-selection-mapping/qa.md)                                                 |
+| `labels`      | `topics`              | Каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]`. При резолве `qt` итоговое `labels` задаёт [mapping/qt.md](repository-selection-mapping/qt.md) (не смешивать с topics). Без `qt` — только из `topics`, как выше. |
+| `properties`  | —                     | Из ответа list — `{}`. Наполнение — [mapping/qa.md](repository-selection-mapping/qa.md)                                                 |
 
 ### uid {#uid}
 
@@ -103,5 +104,5 @@ current = min(page × per_page, X-Total)
 [repository-selection-options.md](repository-selection-options.md).
 - Клиентская фильтрация `--qp`, `--qn`, `--qt`, `--qa` —
 [repository-enumeration/](repository-enumeration/index.md).
-- Пошаговые HTTP enrich (кроме однострочных отсылок выше) — [mapping/](repository-selection-mapping/index.md).
+- Пошаговые HTTP-дозагрузки полей карточки (кроме однострочных отсылок выше) — [mapping/](repository-selection-mapping/index.md).
 - Реализацию в `application/`.

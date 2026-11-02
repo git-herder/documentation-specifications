@@ -7,10 +7,13 @@
 
 На list **нет** server-side фильтра по тегам ([mapping/qt.md](../repository-selection-mapping/qt.md)).
 
-## Вход
+## Данные на карточке
 
-Карточки после полного list (все страницы) и постраничного enrich `--qa`, если он
-был.
+Поле **`labels`**: из Search list ([base-enumeration § карточка](../base-enumeration.md#карточка-репозитория),
+[mapping/qt.md](../repository-selection-mapping/qt.md)).
+
+При резолве **`qa`**: поле **`properties`** — по [mapping/qa.md](../repository-selection-mapping/qa.md);
+иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм
 

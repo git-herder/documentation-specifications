@@ -9,10 +9,10 @@
 [mapping/qt.md](../repository-selection-mapping/qt.md). Здесь только **отсутствие**
 (`--qt имя=null`).
 
-## Вход
+## Данные на карточке
 
-Карточки после list; если после резолва был `qt` — после дозагрузки labels по
-[mapping/qt.md](../repository-selection-mapping/qt.md).
+Поле **`labels`**: при резолве `qt` — [mapping/qt.md](../repository-selection-mapping/qt.md);
+иначе из `topics` в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм
 

@@ -8,11 +8,15 @@
 
 Запросов к API нет — только фильтр по уже собранным карточкам.
 
-## Вход
+## Данные на карточке
 
-Карточки после list; если в резолве были `qt` или `qa` — после постраничного enrich
-по mapping ([qa.md](../repository-selection-mapping/qa.md),
-[qt.md](../repository-selection-mapping/qt.md)).
+Поле **`path`**: [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
+
+При резолве **`qt`**: **`labels`** — [mapping/qt.md](../repository-selection-mapping/qt.md);
+иначе из `topics` в base-enumeration § карточка.
+
+При резолве **`qa`**: **`properties`** — [mapping/qa.md](../repository-selection-mapping/qa.md);
+иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм
 

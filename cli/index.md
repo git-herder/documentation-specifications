@@ -196,7 +196,7 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 
 | `upstream` | `host` по умолчанию |
 |------------|---------------------|
-| `github`   | `github.com`        |
+| `github`   | `api.github.com`    |
 | `gitlab`   | `gitlab.com`        |
 
 ### `--token`

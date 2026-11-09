@@ -11,7 +11,7 @@ CLI, сквозные механизмы и иные постановки при
 ## Связь с другими репозиториями
 
 Репозиторий стоит **ниже** [замысла продукта][product-intent-readme],
-`architecture` и `ADR`, **выше** `application`.
+[архитектурной модели][architecture-readme] и `ADR`, **выше** `application`.
 
 - Каждый документ **ссылается вверх**: [Capability][CAPABILITY-TERM], NFR из
   product-intent, при необходимости — ADR. Правило —
@@ -51,7 +51,7 @@ specifications/
 | Обобщённая карточка репозитория (cross-SCM) | [platform/scm-repository-card.md](platform/scm-repository-card.md) | актуально |
 | SCM-отбор, options GitHub | [scm/github/repository-selection-options.md](scm/github/repository-selection-options.md) | актуально |
 | SCM-отбор, options GitLab | [scm/gitlab/repository-selection-options.md](scm/gitlab/repository-selection-options.md) | актуально |
-| Загрузка из SCM, обогащение карточек (оркестрация, id-649305ae) | [scm/index.md](scm/index.md) | актуально |
+| Загрузка из SCM, обогащение карточек (оркестрация `id-649305ae`, трассировка ArchiMate SCM) | [scm/index.md](scm/index.md) | актуально |
 | SCM-отбор, listing GitHub (реестр) | [scm/github/repository-listing/index.md](scm/github/repository-listing/index.md) | актуально |
 | SCM-отбор, listing GitLab (реестр) | [scm/gitlab/repository-listing/index.md](scm/gitlab/repository-listing/index.md) | актуально |
 | SCM-отбор, enrichment GitHub (реестр) | [scm/github/repository-enrichment/index.md](scm/github/repository-enrichment/index.md) | актуально |
@@ -72,3 +72,4 @@ specifications/
 [upward-references]: ../../playbook/principles/upward-references.md
 [glossary-index]: ../../glossary/index.md
 [product-intent-readme]: ../product-intent/README.md
+[architecture-readme]: ../architecture/README.md

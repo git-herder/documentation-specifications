@@ -2,18 +2,39 @@
 
 SSOT **оркестрации** процесса ArchiMate «Загрузка из SCM и обогащение карточек
 репозиториев» (`id-649305ae`). Переиспользуется командами,
-которым нужен набор [карточек репозитория](../platform/scm-repository-card.md) из SCM.
+которым нужен набор [карточек репозитория](../platform/scm-repository-card.md) из
+SCM.
 
-Критерии отбора, резолв argv и профиля — [hub SCM-отбора](../platform/scm-repository-selection.md).
-HTTP-контракты листинга и обогащения — per `upstream` ниже; клиентская фильтрация —
-[repository-enumeration/](github/repository-enumeration/index.md).
+Критерии отбора, резолв argv и профиля —
+[hub SCM-отбора](../platform/scm-repository-selection.md).
+HTTP-контракты листинга и обогащения — per `upstream` ниже; клиентская
+фильтрация — [repository-enumeration/](github/repository-enumeration/index.md).
 
 ## Трассировка вверх
 
 - [Единый отбор для массовых операций](../../product-intent/capability/platform/repository-selection.md)
-- Модель: [git-herder.archimate](../../architecture/git-herder.archimate)
-- [ADR-26102201](../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md) (раскладка hub / listing / enrichment /
-enumeration)
+- Навигация по модели: [architecture/README.md](../../architecture/README.md);
+  артефакт [git-herder.archimate](../../architecture/git-herder.archimate)
+- [ADR-26102201](../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md)
+  (раскладка hub / listing / enrichment / enumeration)
+- Компоновка кода: [ADR-26110801](../../../ADR/ADR-26110801-go-package-layout.md)
+
+## Трассировка ArchiMate (приложение SCM) {#archimate-scm-application}
+
+View **SCM Listing & Enrichment** и процесс `id-649305ae` (см. **Report command
+flow** в модели) описывают один контур: сначала **сборка** клиентов, затем
+**runtime** HTTP через готовые интерфейсы.
+
+| Фаза | ArchiMate (интерфейсы / сервисы) | Шаг в процессе `id-649305ae` |
+| ---- | -------------------------------- | ---------------------------- |
+| Сборка листинга | ScmClientFactory, ScmListingBuilder, сервис «Создание listing-клиента» | «Собрать REST-клиент server-side отборов для текущего upstream» |
+| Сборка обогащения | ScmClientFactory, ScmEnrichmentBuilder, сервис «Создание enrich-клиентов» | «Собрать REST-клиент получения дополнительных данных для обогащения карточки» |
+| Листинг (runtime) | **ScmListing** (не Builder) | «Выполнить парсинг страниц…» |
+| Обогащение (runtime) | **ScmEnrich** | «Выполнить обогащение карточек» |
+
+Builder'ы — только конфигурация запроса перед `Build()`; пагинация и дозагрузки
+в пайплайне вызывают **ScmListing** / **ScmEnrich**. Детали view —
+[architecture/README.md][arch-readme].
 
 ## Слои per upstream
 
@@ -54,10 +75,12 @@ enumeration)
 
 ### Подготовка REST-клиентов
 
-До HTTP: собрать REST-клиент server-side листинга и REST-клиент обогащения для
-текущего `upstream` (ArchiMate: «Собрать REST-клиент server-side отборов», «Собрать
-REST-клиент получения дополнительных данных для обогащения карточки»). Детали
-запросов — только в `repository-listing/` и `repository-enrichment/`.
+До HTTP: для текущего `upstream` выполнить шаги сборки из
+[таблицы ArchiMate][archimate-scm] (ScmClientFactory → Builder → клиент
+**ScmListing** / **ScmEnrich**). Имена process-функций в модели совпадают с
+колонкой «Шаг в процессе» в той же таблице. Прикладной контракт клиентов —
+интерфейсы в ArchiMate; тела HTTP-запросов — только в
+`repository-listing/` и `repository-enrichment/`.
 
 ### Листинг и RetryingQueue
 
@@ -95,3 +118,7 @@ REST-клиент получения дополнительных данных �
 
 - Синтаксис и композиция `--q*`, ошибки до старта — hub.
 - Политика `affiliated` / `all` — hub и [ADR-26102002](../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md).
+
+<!-- LINKS -->
+[arch-readme]: ../../architecture/README.md
+[archimate-scm]: #archimate-scm-application

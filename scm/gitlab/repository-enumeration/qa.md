@@ -7,12 +7,12 @@
 [карточка § qa][scm-repository-card-qa].
 
 Условия с **`=`** уже отфильтрованы на list
-([mapping/qa.md](../repository-selection-mapping/qa.md)); на клиенте их **не**
+([listing/qa.md](../repository-listing/qa.md)); на клиенте их **не**
 проверяем повторно.
 
 ## Данные на карточке
 
-Поле **`properties`**: при резолве `qa` — [mapping/qa.md](../repository-selection-mapping/qa.md);
+Поле **`properties`**: при резолве `qa` — [enrichment/qa.md](../repository-enrichment/qa.md);
 иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм
@@ -36,7 +36,7 @@
 ```
 
 На list уходит `custom_attributes[team]=Alpha` (urlencoded). **`properties`** для
-проверки `tier>=gold` — по [mapping/qa.md](../repository-selection-mapping/qa.md).
+проверки `tier>=gold` — по [enrichment/qa.md](../repository-enrichment/qa.md).
 На клиенте остаётся только проверка `tier>=gold` в `properties`.
 
 <!-- LINKS -->

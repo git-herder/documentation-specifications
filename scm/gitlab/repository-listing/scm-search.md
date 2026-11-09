@@ -1,18 +1,18 @@
-# Маппинг `scm-search` (GitLab)
+# Листинг `scm-search` (GitLab)
 
 CLI → HTTP. Общий смысл флага — [hub § scm-search][scm-repository-selection-scm-search].
 **Контракт argv ниже — только GitLab**; у других `upstream` свой текст в
-`scm/<upstream>/repository-selection-mapping/scm-search.md`.
+`scm/<upstream>/repository-listing/scm-search.md`.
 
 Upstream Search API: [GitLab Search API](https://docs.gitlab.com/api/search/).
 
 ## Когда включать
 
 После резолва argv и профиля задан `scm-search` и `upstream=gitlab`. Иначе этот
-mapping не используют.
+листинг не используют.
 
 В этой ветке **не** применяют [scope.md](scope.md) (продуктовый `--scope` hub),
-[include-inactive.md](include-inactive.md), mapping `qt` / `qa` и
+[include-inactive.md](include-inactive.md), listing / enrichment `qt` / `qa` и
 [enumeration/](../repository-enumeration/index.md).
 
 **Не путать:** продуктовый флаг hub [`--scope`][scm-repository-selection-scope]
@@ -75,7 +75,7 @@ mapping не используют.
 Для **каждого** элемента **наполняет** карточку по
 [base-enumeration § карточка][base-enumeration-card]. Поле
 `labels` — из `topics` ответа; `properties` = `{}` (ветка `scm-search` не использует
-[mapping/qa.md](qa.md)).
+[enrichment/qa.md](../repository-enrichment/qa.md)).
 
 ## Ошибки HTTP
 

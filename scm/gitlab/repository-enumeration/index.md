@@ -12,7 +12,7 @@
 | `qt` | [§ qt][scm-repository-selection-qt] | [qt.md](qt.md) | `labels` |
 | `qa` | [§ qa][scm-repository-selection-qa] | [qa.md](qa.md) | `properties` |
 
-`scope`, `include-inactive`, `scm-search` — только mapping.
+`scope`, `include-inactive`, `scm-search` — только listing.
 
 Композиция условий между файлами каталога — **AND** ([hub][scm-repository-selection]).
 

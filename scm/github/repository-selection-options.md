@@ -4,7 +4,7 @@ Extension-флаги SCM-отбора, имеющие смысл **только*
 резолва: контракт CLI, ключи профиля и **продуктовый эффект** без REST.
 
 Переносимые критерии и `scope` — [hub SCM-отбора][scm-repository-selection].
-Маппинг на HTTP — [repository-selection-mapping/index.md](repository-selection-mapping/index.md).
+Листинг на HTTP — [repository-listing/index.md](repository-listing/index.md).
 Раскладка — [ADR-26102201][adr-hub-extension].
 
 ## Каталог extension-параметров
@@ -56,17 +56,18 @@ leaf → parents → `root`, иначе default `await`.
 ### Композиция
 
 Переносимые `--qp`, `--qn`, `--qt`, `--qa` и модификаторы действуют **вместе** (AND с
-hub); см. [mapping/index.md](repository-selection-mapping/index.md).
+hub); см. [listing/index.md](repository-listing/index.md).
 
 ## Инварианты
 
 - Контракт extension-флагов GitHub живёт **только** в этом файле.
-- REST — только в mapping / base-enumeration.
+- Листинг и обогащение — только в listing / enrichment / base-enumeration.
 
 ## Не описывать здесь
 
 - Переносимые опции и `scope` — [hub][scm-repository-selection].
-- REST — [mapping/](repository-selection-mapping/index.md) и [base-enumeration.md](base-enumeration.md).
+- Листинг и обогащение — [listing/](repository-listing/index.md),
+  [enrichment/](repository-enrichment/index.md) и [base-enumeration.md](base-enumeration.md).
 - Клиентская фильтрация — [repository-enumeration/](repository-enumeration/index.md).
 
 <!-- LINKS -->

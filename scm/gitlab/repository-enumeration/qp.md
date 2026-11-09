@@ -12,10 +12,10 @@
 
 Поле **`path`**: [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
-При резолве **`qt`**: **`labels`** — [mapping/qt.md](../repository-selection-mapping/qt.md);
+При резолве **`qt`**: **`labels`** — [enrichment/qt.md](../repository-enrichment/qt.md);
 иначе из `topics` в base-enumeration § карточка.
 
-При резолве **`qa`**: **`properties`** — [mapping/qa.md](../repository-selection-mapping/qa.md);
+При резолве **`qa`**: **`properties`** — [enrichment/qa.md](../repository-enrichment/qa.md);
 иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм

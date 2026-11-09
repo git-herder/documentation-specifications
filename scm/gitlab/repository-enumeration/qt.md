@@ -6,12 +6,12 @@
 [scm-repository-card][scm-repository-card].
 
 **Наличие** (`--qt имя` без `=null`) уже отфильтровано на list — параметр `topic` в
-[mapping/qt.md](../repository-selection-mapping/qt.md). Здесь только **отсутствие**
+[listing/qt.md](../repository-listing/qt.md). Здесь только **отсутствие**
 (`--qt имя=null`).
 
 ## Данные на карточке
 
-Поле **`labels`**: при резолве `qt` — [mapping/qt.md](../repository-selection-mapping/qt.md);
+Поле **`labels`**: при резолве `qt` — [enrichment/qt.md](../repository-enrichment/qt.md);
 иначе из `topics` в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм

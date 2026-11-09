@@ -1,4 +1,4 @@
-# Маппинг `scope` (GitLab)
+# Листинг `scope` (GitLab)
 
 GET-параметры базового list — [base-enumeration](../base-enumeration.md).
 

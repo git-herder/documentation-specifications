@@ -1,4 +1,4 @@
-# Маппинг `include-inactive` (GitLab)
+# Листинг `include-inactive` (GitLab)
 
 GET-параметры базового list — [base-enumeration](../base-enumeration.md).
 

@@ -1,8 +1,8 @@
 # Базовое перечисление репозиториев (GitHub)
 
 SSOT базового HTTP list репозиториев GitHub для [SCM-отбора][scm-repository-selection] в режиме
-`--q*`. Наполнение карточки из ответа list — [scm-repository-card][scm-repository-card]; маппинг CLI →
-query — [repository-selection-mapping/][mapping-index].
+`--q*`. Наполнение карточки из ответа list — [scm-repository-card][scm-repository-card]; листинг CLI →
+query — [repository-listing/][listing-index].
 
 ## Трассировка вверх
 
@@ -16,8 +16,8 @@ query — [repository-selection-mapping/][mapping-index].
 GitHub-адаптер перечисляет репозитории запросами `GET /search/repositories` (относительно
 API base из профиля), собирает все страницы ответа и для каждого элемента массива `items`
 наполняет поля [карточки][scm-repository-card] по правилам ниже. Параметр `q` собирается по
-[mapping index § сборка q][mapping-q-build]; участники — `qp`, `qn`, `qa` с `=`; не `qt`.
-Продуктовый маппинг `scope` — [mapping scope][mapping-scope].
+[listing index § сборка q][listing-q-build]; участники — `qp`, `qn`, `qa` с `=`; не `qt`.
+Продуктовый листинг `scope` — [listing scope][listing-scope].
 
 ## Базовый эндпоинт
 
@@ -30,12 +30,12 @@ Query-параметры list (кроме правил сборки `q`):
 
 | Параметр   | Роль                                      |
 | ---------- | ----------------------------------------- |
-| `q`        | Поисковый запрос; сборка — только mapping |
+| `q`        | Поисковый запрос; сборка — только listing |
 | `page`     | Номер страницы                            |
 | `per_page` | Размер страницы (адаптер/профиль)         |
 
 На один сценарий отбора все запросы списка GitHub в режиме `--q*` (кроме `--scm-search`)
-опираются на этот ресурс; дозагрузка и прочие пути — [mapping/][mapping-index].
+опираются на этот ресурс; обогащение — [repository-enrichment/][enrichment-index].
 
 ## Ограничения API {#ограничения-api}
 
@@ -44,13 +44,13 @@ Query-параметры list (кроме правил сборки `q`):
 | Ограничение | Правило |
 | ----------- | ------- |
 | `--qp`, `--qn` | **Не** регэкспы: только строки из символов `A`–`Z`, `a`–`z`, `0`–`9`, `_`, `-`. Иначе — ошибка до HTTP, exit `1` ([hub § ошибки][scm-repository-selection-errors]). |
-| Пустой `q` | Если после резолва нет фрагментов для `q` (например, только `--qt`) — ошибка до HTTP, exit `1` ([mapping § сборка q][mapping-q-build], hub). |
-| `--scope` | **Не** влияет на query `GET /search/repositories` ([mapping scope][mapping-scope]). Рекомендуется задавать `--qp` с **точным** login user или organization. |
+| Пустой `q` | Если после резолва нет фрагментов для `q` (например, только `--qt`) — ошибка до HTTP, exit `1` ([listing § сборка q][listing-q-build], hub). |
+| `--scope` | **Не** влияет на query `GET /search/repositories` ([listing scope][listing-scope]). Рекомендуется задавать `--qp` с **точным** login user или organization. |
 
 Лимит выдачи Search API — [github-search-repositories].
 
 Клиентская фильтрация: `--qt`, `--qa` (частично) — [enumeration/][enumeration-index].
-`--qp`, `--qn` — только Search `q` ([mapping/][mapping-index]), см.
+`--qp`, `--qn` — только Search `q` ([listing/][listing-index]), см.
 [enumeration § назначение][enumeration-scope].
 
 ## Пагинация
@@ -93,7 +93,7 @@ GitHub для list использует **keyset-based** пагинацию че
 
 Имена и типы полей карточки — только [scm-repository-card.md][scm-repository-card]. Ниже —
 наполнение из **элемента** массива `items` ответа `GET /search/repositories` (поля, которые
-задаёт только этот ответ; дозагрузки — [mapping/][mapping-index]).
+задаёт только этот ответ; обогащение — [repository-enrichment/][enrichment-index]).
 
 | Карточка      | Поле элемента GitHub | Правило |
 | ------------- | -------------------- | ------- |
@@ -102,7 +102,7 @@ GitHub для list использует **keyset-based** пагинацию че
 | `path`        | `full_name`          | `full_name` **без последнего** сегмента (`name`); сегменты через `/`. Если в `full_name` один сегмент — `path` = `""` |
 | `description` | `description`        | null или отсутствие — `""` |
 | `labels`      | `topics`             | Каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]` |
-| `properties`  | —                    | Из ответа list — `{}`. При `--qa` — [mapping qa][mapping-qa] |
+| `properties`  | —                    | Из ответа list — `{}`. При `--qa` — [enrichment qa][enrichment-qa] |
 
 ### uid {#uid}
 
@@ -115,8 +115,9 @@ GitHub для list использует **keyset-based** пагинацию че
 - Таблицы переносимых и extension-опций CLI — [hub][scm-repository-selection] и
   [repository-selection-options.md][github-options].
 - Клиентская фильтрация `--qt`, `--qa` (и реестр «только client-side») —
-  [repository-enumeration/][enumeration-index]. `--qp`, `--qn` — только mapping.
-- Пошаговые HTTP-дозагрузки полей карточки (кроме однострочных отсылок выше) — [mapping/][mapping-index].
+  [repository-enumeration/][enumeration-index]. `--qp`, `--qn` — только листинг.
+- Пошаговые HTTP-дозагрузки полей карточки —
+  [repository-enrichment/][enrichment-index].
 - Реализацию в `application/`.
 
 <!-- LINKS -->
@@ -126,12 +127,11 @@ GitHub для list использует **keyset-based** пагинацию че
 [scm-repository-card-uid]: ../../platform/scm-repository-card.md#uid
 [repository-selection-capability]: ../../../product-intent/capability/platform/repository-selection.md
 [adr-hub-extension]: ../../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
-[mapping-index]: repository-selection-mapping/index.md
-[mapping-q-build]: repository-selection-mapping/index.md#сборка-q
-[mapping-qp]: repository-selection-mapping/qp.md
-[mapping-qn]: repository-selection-mapping/qn.md
-[mapping-qa]: repository-selection-mapping/qa.md
-[mapping-scope]: repository-selection-mapping/scope.md
+[listing-index]: repository-listing/index.md
+[listing-q-build]: repository-listing/index.md#сборка-q
+[listing-scope]: repository-listing/scope.md
+[enrichment-index]: repository-enrichment/index.md
+[enrichment-qa]: repository-enrichment/qa.md
 [enumeration-index]: repository-enumeration/index.md
 [enumeration-scope]: repository-enumeration/index.md#назначение-каталога
 [github-options]: repository-selection-options.md

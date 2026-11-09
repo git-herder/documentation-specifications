@@ -7,7 +7,7 @@ Cross-SCM **нормализованная запись** одного репо�
 Замысел: [единый отбор для массовых операций][repository-selection-capability].
 Перечисление и локальная фильтрация: [ADR-26102001][adr-local-eval],
 [SCM-отбор (hub)][scm-repository-selection]. Раскладка hub / base-enumeration /
-mapping / enumeration: [ADR-26102201][adr-hub-extension].
+listing / enrichment / enumeration: [ADR-26102201][adr-hub-extension].
 
 ## Трассировка вверх
 
@@ -21,9 +21,9 @@ SCM-адаптер **наполняет** карточку для каждого
 вход для клиентской фильтрации `--qp`, `--qn`, `--qt`, `--qa` и для JSON-вывода
 команд, которые явно ссылаются на эту спеку (например [report](../cli/report/index.md)).
 
-Правила маппинга native API → поля карточки — **только** в
-`scm/<upstream>/base-enumeration.md` (и REST-дозагрузка — mapping). Здесь — **только**
-обобщённая форма.
+Правила native API → поля карточки из list — **только** в
+`scm/<upstream>/base-enumeration.md` (дозагрузки — `repository-enrichment/`).
+Здесь — **только** обобщённая форма.
 
 ## Поля
 
@@ -122,7 +122,8 @@ Git Herder. Два репозитория с разными `uid` **не** сч�
 
 ## Не описывать здесь
 
-- Базовый list, пагинация, REST — `scm/<upstream>/base-enumeration.md`, mapping.
+- Базовый list, листинг, обогащение — `scm/<upstream>/base-enumeration.md`,
+  `repository-listing/`, `repository-enrichment/`; оркестрация — [scm/index.md](../scm/index.md).
 - Таблицы переносимых и extension-опций — [scm-repository-selection.md](scm-repository-selection.md).
 - Реализацию в `application/`.
 

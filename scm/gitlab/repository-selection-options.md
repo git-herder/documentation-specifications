@@ -4,7 +4,7 @@ Extension-флаги SCM-отбора, имеющие смысл **только*
 резолва: контракт CLI, ключи профиля и **продуктовый эффект** без REST.
 
 Переносимые критерии и `scope` — [hub SCM-отбора][scm-repository-selection].
-Маппинг на HTTP — [repository-selection-mapping/index.md](repository-selection-mapping/index.md).
+Листинг на HTTP — [repository-listing/index.md](repository-listing/index.md).
 Раскладка — [ADR-26102201][adr-hub-extension].
 
 ## Каталог extension-параметров
@@ -29,8 +29,8 @@ Extension-флаги SCM-отбора, имеющие смысл **только*
 ### Область (продукт)
 
 - Режим **`--q*`**: модификатор участвует в отборе вместе с hub-критериями и
-  `scope` ([mapping/include-inactive.md](repository-selection-mapping/include-inactive.md)).
-- При **`--scm-search`**: правило **не** применяется ([mapping/include-inactive.md](repository-selection-mapping/include-inactive.md)).
+  `scope` ([listing/include-inactive.md](repository-listing/include-inactive.md)).
+- При **`--scm-search`**: правило **не** применяется ([listing/include-inactive.md](repository-listing/include-inactive.md)).
 
 ### Профиль
 
@@ -50,17 +50,18 @@ argv; иначе профиль leaf → parents → `root`, иначе default 
 ### Композиция
 
 Переносимые `--qp`, `--qn`, `--qt`, `--qa` и модификаторы действуют **вместе** (AND с
-hub); см. [mapping/index.md](repository-selection-mapping/index.md).
+hub); см. [listing/index.md](repository-listing/index.md).
 
 ## Инварианты
 
 - Контракт extension-флагов GitLab живёт **только** в этом файле.
-- REST — только в mapping / base-enumeration.
+- Листинг и обогащение — только в listing / enrichment / base-enumeration.
 
 ## Не описывать здесь
 
 - Переносимые опции и `scope` — [hub][scm-repository-selection].
-- REST — [mapping/](repository-selection-mapping/index.md) и [base-enumeration.md](base-enumeration.md).
+- Листинг и обогащение — [listing/](repository-listing/index.md),
+  [enrichment/](repository-enrichment/index.md) и [base-enumeration.md](base-enumeration.md).
 - Клиентская фильтрация — [repository-enumeration/](repository-enumeration/index.md).
 
 <!-- LINKS -->

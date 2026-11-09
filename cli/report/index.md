@@ -87,11 +87,12 @@ githerd [глобальные опции] report [опции SCM-отбора] [
     подключения (`host`, `token`).
    - Адаптер выполняет отбор по контракту [scm-repository-selection.md](../../platform/scm-repository-selection.md):
    перечисляет репозитории в допустимом контексте (с учётом `--scope`, extension и
-   `--scm-search`), при необходимости дозагружает метаданные для `--qt` и `--qa`,
-   отфильтровывает результат по `--qp`, `--qn`, `--qt` и `--qa`. Подробности шагов —
-   в разделе [SCM-отбор](#scm-отбор).
+   `--scm-search`), обогащает карточки, отфильтровывает результат по `--qp`, `--qn`,
+   `--qt` и `--qa`. Порядок фаз — [scm/index.md](../../scm/index.md); детали — в
+   разделе [SCM-отбор](#scm-отбор).
    - HTTP: [base-enumeration](../../scm/github/base-enumeration.md) / GitLab-аналог,
-     [mapping](../../scm/github/repository-selection-mapping/index.md) per upstream;
+     [listing](../../scm/github/repository-listing/index.md),
+     [enrichment](../../scm/github/repository-enrichment/index.md) per upstream;
      клиентская фильтрация — [repository-enumeration/…/index.md](../../scm/github/repository-enumeration/index.md).
    - При ошибке обращения к API команда повторяет запрос столько раз, сколько задано
    глобальным `--retries-number`; когда повторы закончились, срабатывает глобальный
@@ -132,13 +133,13 @@ sequenceDiagram
 ## SCM-отбор
 
 Команда передаёт в адаптер все параметры отбора после шагов 1–2. Пайплайн
-(перечисление, дозагрузка метаданных, локальная фильтрация) — в
+(листинг, обогащение, локальная фильтрация) — [scm/index.md](../../scm/index.md) и
 [scm-repository-selection.md](../../platform/scm-repository-selection.md).
 
-| `upstream` | Options | Base | Mapping | Enumeration |
-| ---------- | ------- | ---- | ------- | ----------- |
-| `github`   | [options](../../scm/github/repository-selection-options.md) | [base](../../scm/github/base-enumeration.md) | [mapping](../../scm/github/repository-selection-mapping/index.md) | [enumeration](../../scm/github/repository-enumeration/index.md) |
-| `gitlab`   | [options](../../scm/gitlab/repository-selection-options.md) | [base](../../scm/gitlab/base-enumeration.md) | [mapping](../../scm/gitlab/repository-selection-mapping/index.md) | [enumeration](../../scm/gitlab/repository-enumeration/index.md) |
+| `upstream` | Options | Base | Listing | Enrichment | Enumeration |
+| ---------- | ------- | ---- | ------- | ---------- | ----------- |
+| `github`   | [options](../../scm/github/repository-selection-options.md) | [base](../../scm/github/base-enumeration.md) | [listing](../../scm/github/repository-listing/index.md) | [enrichment](../../scm/github/repository-enrichment/index.md) | [enumeration](../../scm/github/repository-enumeration/index.md) |
+| `gitlab`   | [options](../../scm/gitlab/repository-selection-options.md) | [base](../../scm/gitlab/base-enumeration.md) | [listing](../../scm/gitlab/repository-listing/index.md) | [enrichment](../../scm/gitlab/repository-enrichment/index.md) | [enumeration](../../scm/gitlab/repository-enumeration/index.md) |
 
 ## Режим вывода
 
@@ -233,6 +234,7 @@ githerd-report-${fs-timestamp}.json
 
 ## Не описывать здесь
 
-- REST — mapping и [base-enumeration](../../scm/github/base-enumeration.md) per upstream; клиентская фильтрация — [repository-enumeration/…/index.md](../../scm/github/repository-enumeration/index.md).
+- Листинг, обогащение и [base-enumeration](../../scm/github/base-enumeration.md) per
+  upstream; клиентская фильтрация — [repository-enumeration/…/index.md](../../scm/github/repository-enumeration/index.md).
 - Полную схему карточки репозитория.
 - Код в `application/`.

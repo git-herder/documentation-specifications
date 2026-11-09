@@ -1,4 +1,4 @@
-# Маппинг `qn` (GitHub)
+# Листинг `qn` (GitHub)
 
 Смысл флага — [hub § qp/qn][scm-repository-selection-qp-qn]. Общий `q` —
 [index § сборка q](index.md#сборка-q).

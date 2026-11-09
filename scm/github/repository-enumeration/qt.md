@@ -5,14 +5,14 @@
 [hub § qt][scm-repository-selection-qt]. Поле `labels` карточки —
 [scm-repository-card][scm-repository-card] (из `topics` Search list).
 
-На list **нет** server-side фильтра по тегам ([mapping/qt.md](../repository-selection-mapping/qt.md)).
+На list **нет** server-side фильтра по тегам ([listing/qt.md](../repository-listing/qt.md)).
 
 ## Данные на карточке
 
 Поле **`labels`**: из Search list ([base-enumeration § карточка](../base-enumeration.md#карточка-репозитория),
-[mapping/qt.md](../repository-selection-mapping/qt.md)).
+[listing/qt.md](../repository-listing/qt.md)).
 
-При резолве **`qa`**: поле **`properties`** — по [mapping/qa.md](../repository-selection-mapping/qa.md);
+При резолве **`qa`**: поле **`properties`** — [enrichment/qa.md](../repository-enrichment/qa.md);
 иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм

@@ -7,12 +7,12 @@
 [карточка § qa][scm-repository-card-qa].
 
 Условия с **`=`** уже отфильтрованы на list через `q`
-([mapping/qa.md](../repository-selection-mapping/qa.md)); на клиенте их **не**
+([listing/qa.md](../repository-listing/qa.md)); на клиенте их **не**
 проверяем повторно.
 
 ## Данные на карточке
 
-Поле **`properties`**: при резолве `qa` — по [mapping/qa.md](../repository-selection-mapping/qa.md);
+Поле **`properties`**: при резолве `qa` — [enrichment/qa.md](../repository-enrichment/qa.md);
 иначе `{}` как в [base-enumeration § карточка](../base-enumeration.md#карточка-репозитория).
 
 ## Алгоритм

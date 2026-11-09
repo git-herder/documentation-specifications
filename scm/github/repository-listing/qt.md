@@ -1,11 +1,11 @@
-# Маппинг `qt` (GitHub)
+# Листинг `qt` (GitHub)
 
 Смысл флага — [hub § qt][scm-repository-selection-qt]. Как отфильтровать по тегам на
 клиенте — [enumeration/qt.md](../repository-enumeration/qt.md).
 
 ## Когда есть смысл
 
-После резолва задан хотя бы один `--qt`. Нет `qt` — этот маппинг не нужен.
+После резолва задан хотя бы один `--qt`. Нет `qt` — этот листинг не меняем.
 
 ## Запрос list
 
@@ -13,7 +13,7 @@
 
 Теги на карточке: поле `labels` из `topics` в ответе Search
 ([base-enumeration § карточка][base-enumeration-card]). Отдельного HTTP за labels
-**нет** (на GitLab labels догружают в mapping `qt`).
+**нет** (на GitLab — [enrichment/qt.md](../repository-enrichment/qt.md)).
 
 ## Не в этом файле
 

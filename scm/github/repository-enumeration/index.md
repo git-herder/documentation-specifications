@@ -1,7 +1,8 @@
 # Клиентская фильтрация SCM-отбора (GitHub)
 
 [base-enumeration.md](../base-enumeration.md), [hub][scm-repository-selection],
-[mapping/](../repository-selection-mapping/index.md), [ADR-26102001][adr-local-eval].
+[listing/](../repository-listing/index.md),
+[enrichment/](../repository-enrichment/index.md), [ADR-26102001][adr-local-eval].
 
 ## Назначение каталога
 
@@ -9,7 +10,7 @@
 **локально** на карточке. Один параметр — один файл.
 
 Если опции **нет** в этом каталоге (и в реестре ниже), для GitHub она отрабатывает
-**только на стороне Search** — см. [repository-selection-mapping/](../repository-selection-mapping/index.md)
+**только на стороне Search** — см. [repository-listing/](../repository-listing/index.md)
 (`qp`, `qn`, равенства `qa` в `q` и т.д.).
 
 ## Реестр
@@ -19,10 +20,10 @@
 | `qt` | [§ qt][scm-repository-selection-qt] | [qt.md](qt.md) | `labels` |
 | `qa` | [§ qa][scm-repository-selection-qa] | [qa.md](qa.md) | `properties` (операторы кроме `=`) |
 
-`qp`, `qn` — только [mapping](../repository-selection-mapping/index.md#сборка-q), файлов
+`qp`, `qn` — только [listing](../repository-listing/index.md#сборка-q), файлов
 enumeration **нет**.
 
-`scope`, `on-limit-exceeded`, `scm-search` — mapping / options, не клиентская фильтрация.
+`scope`, `on-limit-exceeded`, `scm-search` — listing / options, не клиентская фильтрация.
 
 Композиция условий между файлами каталога — **AND** ([hub][scm-repository-selection]).
 

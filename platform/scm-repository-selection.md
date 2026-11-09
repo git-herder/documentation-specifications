@@ -30,8 +30,9 @@ extension для SCM-специфичных ключей: [ADR-26102201][adr-hub
 набор** репозиториев на выбранной [SCM-платформе][SCM-PLATFORM-TERM]. **Переносимые**
 опции отбора (таблица ниже), общий резолв с профилем и композиция критериев
 зафиксированы в **этом** документе (hub). **SCM-специфичные** флаги и ключи профиля (extension) —
-в [options per upstream](#options-per-upstream); маппинг hub- и extension-параметров
-на API — в `repository-selection-mapping/` ([ADR-26102201][adr-hub-extension]);
+в [options per upstream](#options-per-upstream); листинг и обогащение hub- и
+extension-параметров на API — `repository-listing/`, `repository-enrichment/`
+([ADR-26102201][adr-hub-extension], оркестрация — [scm/index.md](../scm/index.md));
 спеки команд таблицы **не** дублируют.
 
 ## Синтаксис CLI
@@ -42,7 +43,7 @@ extension для SCM-специфичных ключей: [ADR-26102201][adr-hub
 | Правило | Текст |
 | ------- | ----- |
 | Повтор флага | Каждое повторение `--qp`, `--qn`, `--qt`, `--qa` добавляет **отдельное** условие; все условия после резолва объединяются по **AND** (см. [композицию критериев](#композиция-критериев)). |
-| `--scm-search` | Ровно **одно** задание поиска в argv (один флаг); повтор флага — ошибка контракта (exit `1`). Синтаксис и разбор — `scm/<upstream>/repository-selection-mapping/scm-search.md`. |
+| `--scm-search` | Ровно **одно** задание поиска в argv (один флаг); повтор флага — ошибка контракта (exit `1`). Синтаксис и разбор — `scm/<upstream>/repository-listing/scm-search.md`. |
 | `--scope` | Одно значение: `affiliated` или `all` (канон — нижний регистр); явное `--scope=…` в argv считается заданным значением. |
 | Разделитель `--` | Как в [cli/index.md](../cli/index.md#синтаксис-опций). |
 | Взаимоисключение | После резолва нельзя одновременно иметь `--scm-search` и **любой** из `--qp`, `--qn`, `--qt`, `--qa` — [ошибка до старта](#ошибки-и-коды-выхода). |
@@ -55,7 +56,7 @@ extension для SCM-специфичных ключей: [ADR-26102201][adr-hub
 | `--qn` | повторяемая строка | не задан | Отбор по **имени** репозитория (без полного пути). |
 | `--qt` | повторяемая строка | не задан | Отбор по **тегам**: строгое **наличие** или **отсутствие** (см. [ниже](#qt-теги-qt-теги)). |
 | `--qa` | повторяемая строка | не задан | Отбор по **пользовательским атрибутам** (custom properties и аналоги): сравнение `key` и `value` (см. [ниже](#qa-атрибуты)). |
-| `--scm-search` | per upstream (см. mapping) | не задан | Поиск **средствами SCM**; формат argv и HTTP — [mapping `scm-search`](#options-per-upstream) выбранного `upstream`. |
+| `--scm-search` | per upstream (см. listing) | не задан | Поиск **средствами SCM**; формат argv и HTTP — [listing `scm-search`](#options-per-upstream) выбранного `upstream`. |
 | `--scope` | `affiliated` \| `all` | `affiliated` | Контур перечисления: **связанные с пользователем** или **без** этого ограничения (см. [scope](#scope)). |
 
 Ключи в YAML-профиле — те же имена **без** `--`: `qp`, `qn`, `qt`, `qa`,
@@ -66,16 +67,19 @@ extension для SCM-специфичных ключей: [ADR-26102201][adr-hub
 Extension-флаги (только для одного `upstream` после резолва): контракт CLI и
 продуктовый эффект **без** REST — [ADR-26102201][adr-hub-extension].
 
-| `upstream` | Options | Base list / карточка | Mapping | Enumeration (клиент) |
-| ---------- | ------- | -------------------- | ------- | ---------------------- |
-| `github` | [options](../scm/github/repository-selection-options.md) | [base-enumeration](../scm/github/base-enumeration.md) (+ [карточка][scm-repository-card]) | [mapping/index](../scm/github/repository-selection-mapping/index.md) | [enumeration/index](../scm/github/repository-enumeration/index.md) |
-| `gitlab` | [options](../scm/gitlab/repository-selection-options.md) | [base-enumeration](../scm/gitlab/base-enumeration.md) (+ [карточка][scm-repository-card]) | [mapping/index](../scm/gitlab/repository-selection-mapping/index.md) | [enumeration/index](../scm/gitlab/repository-enumeration/index.md) |
+| `upstream` | Options | Base list / карточка | Listing | Enrichment | Enumeration (клиент) |
+| ---------- | ------- | -------------------- | ------- | ---------- | ---------------------- |
+| `github` | [options](../scm/github/repository-selection-options.md) | [base-enumeration](../scm/github/base-enumeration.md) (+ [карточка][scm-repository-card]) | [listing/index](../scm/github/repository-listing/index.md) | [enrichment/index](../scm/github/repository-enrichment/index.md) | [enumeration/index](../scm/github/repository-enumeration/index.md) |
+| `gitlab` | [options](../scm/gitlab/repository-selection-options.md) | [base-enumeration](../scm/gitlab/base-enumeration.md) (+ [карточка][scm-repository-card]) | [listing/index](../scm/gitlab/repository-listing/index.md) | [enrichment/index](../scm/gitlab/repository-enrichment/index.md) | [enumeration/index](../scm/gitlab/repository-enumeration/index.md) |
 
-**Mapping** — CLI → REST; **enumeration** — фильтрация выборки на клиенте (`qp`, `qn`,
-`qt`, `qa`); [ADR-26102201][adr-hub-extension].
+Порядок фаз listing → enrichment → enumeration — [scm/index.md](../scm/index.md).
+**Listing** — server-side list; **enrichment** — дозагрузки полей карточки;
+**enumeration** — клиентская фильтрация (`qp`, `qn`, `qt`, `qa`);
+[ADR-26102201][adr-hub-extension].
 
-Общие правила для extension (детали флагов — только в options; REST — в
-`mapping/<parameter>.md`; клиентская фильтрация — в `repository-enumeration/<parameter>.md`):
+Общие правила для extension (детали флагов — только в options; list —
+`repository-listing/<parameter>.md`; обогащение — `repository-enrichment/`; клиент —
+`repository-enumeration/<parameter>.md`):
 
 | Правило | Текст |
 | ------- | ----- |
@@ -83,7 +87,7 @@ Extension-флаги (только для одного `upstream` после р�
 | Допустимость | Флаг или ключ профиля из options **чужого** `upstream` — ошибка до старта (exit `1`). |
 | Композиция | Условия extension и переносимые `--q*` после резолва — **AND**, если в options не сказано иное. |
 | Критерий задан | Extension-параметр, описанный как **критерий** в options, учитывается при проверке «задан хотя бы один критерий» ([ошибки](#ошибки-и-коды-выхода)). **Модификаторы** pipeline (например `include-inactive` на GitLab) критерием **не** считаются — только в options. |
-| `scm-search` | Взаимоисключения extension с `--scm-search` — в options или mapping; модификаторы hub/extension в ветке `--scm-search` **не** применяются, если не сказано иное. |
+| `scm-search` | Взаимоисключения extension с `--scm-search` — в options или listing; модификаторы hub/extension в ветке `--scm-search` **не** применяются, если не сказано иное. |
 | Таблицы options | В hub **не** дублировать (например `--include-inactive` — только GitLab options). |
 
 ## Резолв с профилем
@@ -157,7 +161,7 @@ clone:
 
 Критерии `--qp` и `--qn` **не** оцениваются регэкпом/подстрокой на карточке: отбор
 только через query `q` базового `GET /search/repositories`
-([github/repository-selection-mapping/index.md § сборка q][github-mapping-q-build]).
+([github/repository-listing/index.md § сборка q][github-listing-q-build]).
 Файлов `qp`/`qn` в [repository-enumeration/][github-enumeration-index] **нет** (только
 server-side). Значения `--qp`/`--qn` для Search — литералы из ограниченного алфавита
 ([github base-enumeration § ограничения API][github-base-limits]).
@@ -204,8 +208,8 @@ server-side). Значения `--qp`/`--qn` для Search — литералы 
 Проверка `<`, `>`, `<=`, `>=` в `--qt` — **ошибка разбора** (exit `1`).
 
 Сопоставление с данными репозитория — [scm-repository-card.md](scm-repository-card.md)
-(поле `labels`); per-SCM шаги — `scm/<upstream>/repository-selection-mapping/qt.md`
-(кроме случаев, когда mapping описан отдельно), фильтрация —
+(поле `labels`); per-SCM листинг — `scm/<upstream>/repository-listing/qt.md`,
+обогащение — `scm/<upstream>/repository-enrichment/` (если есть), фильтрация —
 `scm/<upstream>/repository-enumeration/qt.md`.
 
 ### `qa` (атрибуты)
@@ -223,8 +227,9 @@ server-side). Значения `--qp`/`--qn` для Search — литералы 
 Символы `<` и `>` в shell передают через `--qa=key>=value`, кавычки или аргументы
 после `--` — [синтаксис опций](../cli/index.md#синтаксис-опций).
 
-Несколько `--qa` — AND. REST-дозагрузка — mapping `qa.md`; проверка на карточке —
-`repository-enumeration/qa.md` per `upstream`.
+Несколько `--qa` — AND. Листинг и обогащение — `repository-listing/qa.md` и
+`repository-enrichment/qa.md`; проверка на карточке — `repository-enumeration/qa.md`
+per `upstream`.
 
 #### Разбор значения `--qa`
 
@@ -239,19 +244,20 @@ server-side). Значения `--qp`/`--qn` для Search — литералы 
 5. Пустой *value* **допустим** (сравнение с пустой строкой / канонической строкой
    scalar по [карточке][scm-repository-card]).
 
-Per-SCM server-side list и REST-enrich — `scm/<upstream>/repository-selection-mapping/qa.md`;
-клиентская проверка на карточке — `repository-enumeration/qa.md`.
+Per-SCM server-side list — `scm/<upstream>/repository-listing/qa.md`; обогащение
+`properties` — `repository-enrichment/qa.md`; клиентская проверка —
+`repository-enumeration/qa.md`.
 
 ### `scm-search`
 
 - Переносимый критерий **один**; повтор `--scm-search` в argv — [ошибка](#ошибки-и-коды-выхода).
 - **Синтаксис argv, разбор и ограничения значения** задаёт только
-  `scm/<upstream>/repository-selection-mapping/scm-search.md` (у каждого upstream
+  `scm/<upstream>/repository-listing/scm-search.md` (у каждого upstream
   свой контракт; hub глобальный формат **не** фиксирует).
 - Режим **не** использует критерии `--q*` и **не** применяет продуктовый
   [scope](#scope) к запросу в SCM (штатная ситуация).
 - Результат отбора — множество репозиториев, возвращённое SCM по этому запросу
-  (нормализация в карточку — mapping / base-enumeration per `upstream`).
+  (нормализация в карточку — listing / base-enumeration per `upstream`).
 
 ### `scope`
 
@@ -263,47 +269,49 @@ Per-SCM server-side list и REST-enrich — `scm/<upstream>/repository-selection
 
 | Значение | Поведение (режим `--q*`, не `--scm-search`) |
 | -------- | --------------------------------------------- |
-| `affiliated` (по умолчанию) | Адаптер **добавляет** к запросам перечисления и обогащения (до локальной фильтрации `--q*`) продуктовое ограничение: только репозитории, **связанные с текущим пользователем**. Маппинг на HTTP — [mapping `scope`](#options-per-upstream) выбранного `upstream`. |
+| `affiliated` (по умолчанию) | Адаптер **добавляет** к запросам листинга и обогащения (до локальной фильтрации `--q*`) продуктовое ограничение: только репозитории, **связанные с текущим пользователем**. Листинг на HTTP — [listing `scope`](#options-per-upstream) выбранного `upstream`. |
 | `all` | Это ограничение **не** добавляется. |
 
 В режиме `--scm-search` значение `--scope` **не влияет** на запрос в SCM; правила
 публичного SaaS для `scope` и предупреждения — [ADR-26102002][adr-saas-guard-scope]
 (в ветке `--scm-search` предупреждение **не** выводится).
 
-Маппинг `affiliated` / `all` на HTTP — в `repository-selection-mapping/scope.md`;
+Листинг `affiliated` / `all` на HTTP — в `repository-listing/scope.md`;
 политика на `github.com` / `gitlab.com` — **только** в [ADR-26102002][adr-saas-guard-scope]:
 
-| `upstream` | Mapping `scope` |
-| ---------- | --------------- |
-| `github` | [github/repository-selection-mapping/scope.md](../scm/github/repository-selection-mapping/scope.md) |
-| `gitlab` | [gitlab/repository-selection-mapping/scope.md](../scm/gitlab/repository-selection-mapping/scope.md) |
+| `upstream` | Listing `scope` |
+| ---------- | ----------------- |
+| `github` | [github/repository-listing/scope.md](../scm/github/repository-listing/scope.md) |
+| `gitlab` | [gitlab/repository-listing/scope.md](../scm/gitlab/repository-listing/scope.md) |
 
 ## Пайплайн отбора
+
+Детали очереди и прогресса — [scm/index.md § алгоритм](../scm/index.md#алгоритм-q-star).
 
 ```mermaid
 flowchart TD
   resolve[Резолв argv и профиля]
   validate[Проверка взаимоисключений]
   branch{Задан scm-search?}
-  native[Запрос в SCM-адаптер]
-  enum[Перечисление с учётом scope]
-  enrich[Обогащение карточек для qt и qa]
-  eval[Локальная фильтрация qp qn qt qa]
+  native[Листинг scm-search]
+  listing[Листинг server-side]
+  enrich[Обогащение всех карточек]
+  eval[Enumeration клиент]
   out[Набор целей команды]
 
   resolve --> validate
   validate --> branch
   branch -->|да| native --> out
-  branch -->|нет| enum --> enrich --> eval --> out
+  branch -->|нет| listing --> enrich --> eval --> out
 ```
 
 1. Резолв параметров отбора и SCM-контекста.
 2. Проверка: задан хотя бы один критерий; нет конфликта `scm-search` + `--q*`.
-3. Ветка **`--scm-search`** — один запрос в адаптер; иначе перечисление с учётом
-   `--scope` и extension-модификаторов, обогащение метаданных для `qt` / `qa`, локальная
-   фильтрация `qp`, `qn`, `qt`, `qa` ([ADR-26102001][adr-local-eval]). На GitHub
-   `--qp`/`--qn` участвуют в **mapping** (Search `q`), а не в локальной оценке hub
-   выше.
+3. Ветка **`--scm-search`** — один листинг в адаптере; иначе **сначала** листинг с
+   учётом `--scope` и extension-модификаторов, **затем** обогащение **всех** карточек,
+   **затем** клиентская фильтрация `qp`, `qn`, `qt`, `qa` ([ADR-26102001][adr-local-eval]).
+   На GitHub `--qp`/`--qn` участвуют в **листинге** (Search `q`), а не в локальной оценке
+   hub выше.
 
 ## Ошибки и коды выхода
 
@@ -314,13 +322,13 @@ flowchart TD
 | ------- | -------- |
 | После резолва одновременно `--scm-search` и любой `--q*` | Сообщение об ошибке; команда не стартует. |
 | Повтор `--scm-search` в argv | Ошибка контракта. |
-| Неверный синтаксис `--scm-search` для текущего `upstream` (по mapping) | Ошибка разбора значения, exit `1`. |
+| Неверный синтаксис `--scm-search` для текущего `upstream` (по listing) | Ошибка разбора значения, exit `1`. |
 | Ни один критерий не задан (переносимые `qp`, `qn`, `qt`, `qa`, `scm-search` и задействованные extension-параметры для текущего `upstream` все «не задан») | Ошибка: не задан критерий SCM-отбора. |
 | После резолва задан extension-параметр не для текущего `upstream` | Ошибка до старта (exit `1`). |
 | Неверный синтаксис значения `--qt` (в т.ч. операторы `<` … `>=`) | Ошибка разбора значения. |
 | Неверный синтаксис значения `--qa` | Ошибка разбора значения. |
 | `--scope` не `affiliated` и не `all` | Ошибка контракта. |
-| `upstream=github`, режим `--q*`, после резолва **нет** server-side фрагмента для `q` (только `--qt`, или только `--qa` без `=`, и т.п.) | Ошибка до HTTP: нужен `--qp`, `--qn` или `--qa` с `=` ([github mapping § сборка q][github-mapping-q-build]). |
+| `upstream=github`, режим `--q*`, после резолва **нет** server-side фрагмента для `q` (только `--qt`, или только `--qa` без `=`, и т.п.) | Ошибка до HTTP: нужен `--qp`, `--qn` или `--qa` с `=` ([github listing § сборка q][github-listing-q-build]). |
 | `upstream=github`, неверный алфавит значения `--qp` или `--qn` | Ошибка до HTTP, exit `1` ([github base-enumeration § ограничения API][github-base-limits]). |
 
 Итоговый набор **пуст** после успешного отбора — поведение **команды** (ошибка,
@@ -334,8 +342,8 @@ flowchart TD
 
 - Таблица **переносимых** опций SCM-отбора живёт **только** в этом файле (hub).
 - Таблица опций **extension** для каждого `upstream` — **только** в
-  `scm/<upstream>/repository-selection-options.md`; маппинг на API — в
-  `scm/<upstream>/repository-selection-mapping/` ([раскладка][adr-hub-extension]).
+  `scm/<upstream>/repository-selection-options.md`; листинг и обогащение — в
+  `scm/<upstream>/repository-listing/` и `repository-enrichment/` ([раскладка][adr-hub-extension]).
 - Режим `--scm-search` несовместим с любым `--q*` после резолва.
 - В режиме `--scm-search` продуктовый `scope` к запросу в SCM **не** применяется.
 - `scope`: только `affiliated` или `all`; default `affiliated`; один только `scope` не
@@ -354,11 +362,12 @@ flowchart TD
 ## Не описывать здесь
 
 - Таблицы SCM-специфичных extension-флагов — [options per upstream](#options-per-upstream).
-- CLI → REST — `scm/<upstream>/repository-selection-mapping/`.
+- Листинг и обогащение — `scm/<upstream>/repository-listing/`,
+  `repository-enrichment/`; оркестрация — [scm/index.md](../scm/index.md).
 - Базовый list, пагинация — `scm/<upstream>/base-enumeration.md`.
 - Cross-SCM **имена и типы** полей карточки — [scm-repository-card.md](scm-repository-card.md); наполнение из API — `scm/<upstream>/base-enumeration.md`.
 - Клиентская фильтрация `--q*` — `scm/<upstream>/repository-enumeration/<parameter>.md`.
-- Per-SCM маппинг native → карточка — только в `base-enumeration.md`, не здесь.
+- Per-SCM наполнение карточки из list — только в `base-enumeration.md`, не здесь.
 - Пошаговые сценарии отдельных команд — `cli/<command>/`.
 - Реализацию в `application/`.
 - Локальный отбор рабочих копий.
@@ -371,6 +380,6 @@ flowchart TD
 [adr-saas-guard-scope]: ../../../ADR/ADR-26102002-public-saas-scm-affiliation-guard.md#scope-public-saas
 [adr-hub-extension]: ../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
 [scm-repository-card]: scm-repository-card.md
-[github-mapping-q-build]: ../scm/github/repository-selection-mapping/index.md#сборка-q
+[github-listing-q-build]: ../scm/github/repository-listing/index.md#сборка-q
 [github-enumeration-index]: ../scm/github/repository-enumeration/index.md
 [github-base-limits]: ../scm/github/base-enumeration.md#ограничения-api

@@ -1,12 +1,13 @@
-# Реестр маппинга SCM-отбора (GitLab)
+# Реестр листинга SCM-отбора (GitLab)
 
-CLI → HTTP. [base-enumeration.md](../base-enumeration.md),
+CLI → HTTP (server-side list). [base-enumeration.md](../base-enumeration.md),
+[repository-enrichment/](../repository-enrichment/index.md),
 [repository-enumeration/](../repository-enumeration/index.md),
 [options](../repository-selection-options.md), [hub][scm-repository-selection].
 
-## Реестр (REST)
+## Реестр (REST list)
 
-| Параметр | Контракт | Маппинг |
+| Параметр | Контракт | Листинг |
 | -------- | -------- | ------- |
 | `scope` | [hub § scope][scm-repository-selection-scope] | [scope.md](scope.md) |
 | `include-inactive` | [options § include-inactive][options-include-inactive] | [include-inactive.md](include-inactive.md) |
@@ -15,6 +16,11 @@ CLI → HTTP. [base-enumeration.md](../base-enumeration.md),
 | `qa` | [hub § qa][scm-repository-selection-qa] | [qa.md](qa.md) |
 
 `qp`, `qn` — только [enumeration/](../repository-enumeration/index.md).
+
+Обогащение карточек после листинга —
+[repository-enrichment/index.md](../repository-enrichment/index.md).
+
+Порядок фаз listing → enrichment — [scm/index.md](../../index.md).
 
 <!-- LINKS -->
 [scm-repository-selection]: ../../../platform/scm-repository-selection.md

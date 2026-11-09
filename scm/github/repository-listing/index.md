@@ -1,12 +1,13 @@
-# Реестр маппинга SCM-отбора (GitHub)
+# Реестр листинга SCM-отбора (GitHub)
 
-CLI → HTTP. [base-enumeration.md](../base-enumeration.md),
+CLI → HTTP (server-side list). [base-enumeration.md](../base-enumeration.md),
+[repository-enrichment/](../repository-enrichment/index.md),
 [repository-enumeration/](../repository-enumeration/index.md),
 [options](../repository-selection-options.md), [hub][scm-repository-selection].
 
-## Реестр (REST)
+## Реестр (REST list)
 
-| Параметр | Контракт | Маппинг |
+| Параметр | Контракт | Листинг |
 | -------- | -------- | ------- |
 | `scope` | [hub § scope][scm-repository-selection-scope] | [scope.md](scope.md) |
 | `qp` | [hub § qp/qn][scm-repository-selection-qp-qn] | [qp.md](qp.md) |
@@ -16,6 +17,8 @@ CLI → HTTP. [base-enumeration.md](../base-enumeration.md),
 
 `scm-search` — отдельная ветка hub; в режиме `--q*` не комбинируется с переносимыми
 критериями.
+
+Обогащение карточек после листинга — [repository-enrichment/index.md](../repository-enrichment/index.md).
 
 ## Сборка query `q` {#сборка-q}
 
@@ -57,6 +60,7 @@ SSOT строки `q` для базового list `GET /search/repositories`
 - Семантика argv, AND между `--q*`, разбор `--qt` / `--qa` — hub.
 - Поля карточки — [scm-repository-card][scm-repository-card], наполнение из list —
   [base-enumeration § карточка][base-enumeration-card].
+- Порядок фаз listing → enrichment — [scm/index.md](../../index.md).
 
 <!-- LINKS -->
 [scm-repository-selection]: ../../../platform/scm-repository-selection.md

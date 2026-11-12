@@ -313,6 +313,19 @@ flowchart TD
    На GitHub `--qp`/`--qn` участвуют в **листинге** (Search `q`), а не в локальной оценке
    hub выше.
 
+## Журнал `--debug`
+
+При `--debug`, помимо входа и выхода шагов отбора ([журнал][logging]):
+
+- ошибка страницы листинга — номер страницы и текст ошибки;
+- ошибка обогащения — идентификатор задания, `fullName` карточки и текст
+  ошибки;
+- клиентский отсев — на каждую отброшенную карточку `fullName` и условие,
+  которое не совпало (`path`, `name`, `tag`, `attr`). Итог `in` / `out` — на
+  выходе фильтра.
+
+Формат строки — [журнал][logging].
+
 ## Ошибки и коды выхода
 
 До выполнения тела команды, если не сказано иное, код выхода **`1`** (как ошибка
@@ -383,3 +396,4 @@ flowchart TD
 [github-listing-q-build]: ../scm/github/repository-listing/index.md#сборка-q
 [github-enumeration-index]: ../scm/github/repository-enumeration/index.md
 [github-base-limits]: ../scm/github/base-enumeration.md#ограничения-api
+[logging]: logging.md#debug

@@ -59,6 +59,12 @@
 
 Прочие команды задают свой объект в своей спеке.
 
+## Журнал `--debug`
+
+При `--debug` на каждую ошибку объекта очередь пишет номер попытки, текст
+ошибки и решение: `retry`, `continue` или `abort`. Итог прогона остаётся на
+выходе очереди. Формат строки — [журнал][logging].
+
 ## Не здесь
 
 - Значения флагов, коды выхода, резолв с профилем — [cli/index.md][cli-retries].
@@ -70,3 +76,4 @@
 [adr-retry]: ../../../ADR/ADR-26110301-retrying-queue-policy.md
 [scm-index]: ../scm/index.md
 [transport]: scm-http-transport.md
+[logging]: logging.md#debug

@@ -42,10 +42,12 @@ SSOT строки `q` для базового list `GET /search/repositories`
 3. Собрать **одну** строку: все фрагменты из шагов 1–2, конкатенация через символ
    `+` (AND в синтаксисе GitHub Search). Порядок фрагментов и видов `--q*` **не**
    нормативен.
-4. Если после шагов 1–2 **нет ни одного** фрагмента (например, только `--qt`, или
-   только `--qa` без `=`) — **ошибка до HTTP**, exit `1`
-   ([hub § ошибки][scm-repository-selection-errors]).
+4. Если после шагов 1–2 **нет ни одного** фрагмента (только `--qt`, только
+   `--qa` без `=`, либо нет критериев отбора) — `q` равен `stars:>=0`.
+   Квалификатор истинен для любого репозитория. Это не ошибка до HTTP.
+   Лимит выдачи Search API (~1000) при этом не обходится.
 5. Значение `q` в query string кодирует по правилам HTTP (percent-encoding).
+   К фрагментам из шагов 1–2 квалификатор шага 4 **не** добавляется.
 
 Пример: `--qn code2 --qn archi --qp jopos --qa foo=bar` → фрагменты из qn, qp, qa;
 итоговая строка эквивалентна `code2+archi+org:jopos+user:jopos+props.foo:bar` (порядок
@@ -70,7 +72,6 @@ SSOT строки `q` для базового list `GET /search/repositories`
 [scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги
 [scm-repository-selection-qa]: ../../../platform/scm-repository-selection.md#qa-атрибуты
 [scm-repository-selection-scm-search]: ../../../platform/scm-repository-selection.md#scm-search
-[scm-repository-selection-errors]: ../../../platform/scm-repository-selection.md#ошибки-и-коды-выхода
 [scm-repository-card]: ../../../platform/scm-repository-card.md
 [base-enumeration-limits]: ../base-enumeration.md#ограничения-api
 [base-enumeration-card]: ../base-enumeration.md#карточка-репозитория

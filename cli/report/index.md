@@ -105,6 +105,9 @@ githerd [глобальные опции] report [опции SCM-отбора] [
      результат по `--qp`, `--qn`,
    `--qt` и `--qa`. Порядок фаз — [scm/index.md](../../scm/index.md); детали — в
    разделе [SCM-отбор](#scm-отбор).
+   - Нет server-side фрагментов `q` на GitHub — команда **не** останавливается;
+     строку `q` задаёт
+     [сборка q](../../scm/github/repository-listing/index.md#сборка-q).
    - HTTP: [base-enumeration](../../scm/github/base-enumeration.md) / GitLab-аналог,
      [listing](../../scm/github/repository-listing/index.md),
      [enrichment](../../scm/github/repository-enrichment/index.md) per upstream;

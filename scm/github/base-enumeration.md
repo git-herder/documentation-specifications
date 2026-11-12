@@ -46,7 +46,7 @@ Query-параметры list (кроме правил сборки `q`):
 | Ограничение | Правило |
 | ----------- | ------- |
 | `--qp`, `--qn` | **Не** регэкспы: только строки из символов `A`–`Z`, `a`–`z`, `0`–`9`, `_`, `-`. Иначе — ошибка до HTTP, exit `1` ([hub § ошибки][scm-repository-selection-errors]). |
-| Пустой `q` | Если после резолва нет фрагментов для `q` (например, только `--qt`) — ошибка до HTTP, exit `1` ([listing § сборка q][listing-q-build], hub). |
+| Пустой `q` | Если после резолва нет фрагментов для `q`, строку задаёт [listing § сборка q][listing-q-build]. Это не ошибка до HTTP. |
 | `--scope` | **Не** влияет на query `GET /search/repositories` ([listing scope][listing-scope]). Рекомендуется задавать `--qp` с **точным** login user или organization. |
 
 Лимит выдачи Search API — [github-search-repositories].

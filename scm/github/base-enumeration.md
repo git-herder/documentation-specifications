@@ -34,8 +34,10 @@ Query-параметры list (кроме правил сборки `q`):
 | `page`     | Номер страницы                            |
 | `per_page` | Размер страницы (адаптер/профиль)         |
 
-На один сценарий отбора все запросы списка GitHub в режиме `--q*` (кроме `--scm-search`)
-опираются на этот ресурс; обогащение — [repository-enrichment/][enrichment-index].
+На один сценарий отбора все запросы списка GitHub в режиме `--q*` опираются на
+этот ресурс; обогащение — [repository-enrichment/][enrichment-index]. Ветка
+`--scm-search` — только [listing/scm-search.md][listing-scm-search] (тот же
+`GET /search/repositories`, другой разбор query).
 
 ## Ограничения API {#ограничения-api}
 
@@ -98,6 +100,7 @@ GitHub для list использует **keyset-based** пагинацию че
 | `name`        | `name`               | Значение поля `name` как UTF-8 string |
 | `path`        | `full_name`          | `full_name` **без последнего** сегмента (`name`); сегменты через `/`. Если в `full_name` один сегмент — `path` = `""` |
 | `description` | `description`        | null или отсутствие — `""` |
+| `url`         | `html_url`           | Значение как UTF-8 string. Пустое, null или отсутствие — [карточка § url][scm-repository-card-url] |
 | `labels`      | `topics`             | Каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]` |
 | `properties`  | —                    | Из ответа list — `{}`. При `--qa` — [enrichment qa][enrichment-qa] |
 
@@ -122,9 +125,11 @@ GitHub для list использует **keyset-based** пагинацию че
 [scm-repository-selection-errors]: ../../platform/scm-repository-selection.md#ошибки-и-коды-выхода
 [scm-repository-card]: ../../platform/scm-repository-card.md
 [scm-repository-card-uid]: ../../platform/scm-repository-card.md#uid
+[scm-repository-card-url]: ../../platform/scm-repository-card.md#url
 [repository-selection-capability]: ../../../product-intent/capability/platform/repository-selection.md
 [adr-hub-extension]: ../../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
 [listing-index]: repository-listing/index.md
+[listing-scm-search]: repository-listing/scm-search.md
 [listing-q-build]: repository-listing/index.md#сборка-q
 [listing-scope]: repository-listing/scope.md
 [enrichment-index]: repository-enrichment/index.md

@@ -14,9 +14,10 @@ CLI → HTTP (server-side list). [base-enumeration.md](../base-enumeration.md),
 | `qn` | [hub § qp/qn][scm-repository-selection-qp-qn] | [qn.md](qn.md) |
 | `qt` | [hub § qt][scm-repository-selection-qt] | [qt.md](qt.md) |
 | `qa` | [hub § qa][scm-repository-selection-qa] | [qa.md](qa.md) |
+| `scm-search` | [hub § scm-search][scm-repository-selection-scm-search] | [scm-search.md](scm-search.md) |
 
 `scm-search` — отдельная ветка hub; в режиме `--q*` не комбинируется с переносимыми
-критериями.
+критериями. Сборка `q` ниже к этой ветке **не** относится.
 
 Обогащение карточек после листинга — [repository-enrichment/index.md](../repository-enrichment/index.md).
 
@@ -68,6 +69,7 @@ SSOT строки `q` для базового list `GET /search/repositories`
 [scm-repository-selection-qp-qn]: ../../../platform/scm-repository-selection.md#qp-и-qn
 [scm-repository-selection-qt]: ../../../platform/scm-repository-selection.md#qt-теги
 [scm-repository-selection-qa]: ../../../platform/scm-repository-selection.md#qa-атрибуты
+[scm-repository-selection-scm-search]: ../../../platform/scm-repository-selection.md#scm-search
 [scm-repository-selection-errors]: ../../../platform/scm-repository-selection.md#ошибки-и-коды-выхода
 [scm-repository-card]: ../../../platform/scm-repository-card.md
 [base-enumeration-limits]: ../base-enumeration.md#ограничения-api

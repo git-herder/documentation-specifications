@@ -32,14 +32,16 @@ SCM-адаптер **наполняет** карточку для каждого
 | `uid` | string **или** number (JSON) | Уникальный идентификатор репозитория **в пределах одного** подключения к SCM (резолв `upstream`, `host` и учётных данных профиля). **Не** используется в критериях `--q*`. JSON-тип и правило построения значения зависят от `upstream` — [ниже](#uid). |
 | `name` | UTF-8 string | Имя репозитория **без** префикса пути; пример `specifications`. |
 | `path` | UTF-8 string | Путь от **корня SCM-контекста** (иерархия namespace на платформе) до **родителя** `name`; сегменты через `/`. Пример: `snowbridge-projects/git-herder/documentation`. **`name` не повторяют** в конце `path`. |
+| `url` | UTF-8 string | Абсолютный URL страницы репозитория в UI SCM (схема `http` или `https`), непустая строка. **Не** используется в критериях `--q*`. Заполняется из list, не заданиями обогащения. Native-поле — только `base-enumeration` per `upstream`. |
 | `description` | UTF-8 string | Неограниченная длина. Если у SCM нет описания — **`""`**; поле **всегда** присутствует. |
 | `labels` | массив string | Каждый элемент — один **тег** (или native-аналог, сведённый к строке тега) в UTF-8. Пустой массив `[]`, если тегов нет. Порядок **не** нормативен; повторы допустимы. Маппинг native → строки — `base-enumeration` per `upstream`. |
 | `properties` | объект string → scalar | Ключ — UTF-8 string (имя property). Значение — ровно один scalar: string, number (JSON number), boolean или **date** (JSON string). **Date** в карточке — профиль **data-timestamp** ([ADR-26101704][adr-timestamp]). Пустой объект `{}`, если custom properties нет. |
 
 ## JSON
 
-Нормативная сериализация — один JSON-объект с **ровно** шестью ключами верхнего
-уровня: `uid`, `name`, `path`, `description`, `labels`, `properties`. Типы — как в таблице.
+Нормативная сериализация — один JSON-объект с **ровно** семью ключами верхнего
+уровня: `uid`, `name`, `path`, `url`, `description`, `labels`, `properties`.
+Типы — как в таблице.
 
 Пример (GitHub-подобный `uid` — строка):
 
@@ -48,6 +50,7 @@ SCM-адаптер **наполняет** карточку для каждого
   "uid": "snowbridge-projects/git-herder/documentation/specifications",
   "name": "specifications",
   "path": "snowbridge-projects/git-herder/documentation",
+  "url": "https://scm.example/snowbridge-projects/git-herder/documentation/specifications",
   "description": "Прикладные спецификации Git Herder",
   "labels": [
     "foo",
@@ -110,15 +113,27 @@ Git Herder. Два репозитория с разными `uid` **не** сч�
 | `gitlab` | number | [base-enumeration (GitLab)](../scm/gitlab/base-enumeration.md#uid) |
 | иные | по спеке upstream | `scm/<upstream>/base-enumeration.md#uid` |
 
-Форма `uid` для каждого `upstream` задаётся **только** в `base-enumeration` (GitHub —
-строка из `path` и `name`; GitLab — id проекта из API).
+Форма `uid` для каждого `upstream` задаётся **только** в `base-enumeration`
+(GitHub — строка из `path` и `name`; GitLab — id проекта из API).
+
+### `url`
+
+Абсолютный URL страницы репозитория в UI SCM. Какое native-поле копировать в
+`url` — только `base-enumeration` выбранного `upstream` (ветка `--scm-search`
+наполняет карточку по той же таблице).
+
+Если в элементе list значение отсутствует, равно `null` или пустое после trim —
+элемент **невалиден**. Задание страницы list завершается ошибкой; повторы и
+итог — [`--retries-number` / `--on-error`][cli-on-error].
 
 ## Инварианты
 
-- Все шесть ключей верхнего уровня **обязательны** в каждой карточке.
-- `labels` — массив (не `null`); минимум `[]`. `properties` — объект (не `null`); минимум `{}`.
-- Семантика полей карточки **не** дублируется в hub и в `repository-enumeration/*` —
-  только ссылки на эту спеку.
+- Все семь ключей верхнего уровня **обязательны** в каждой карточке.
+- `url` непустой после list; задания обогащения его **не** заменяют.
+- `labels` — массив (не `null`); минимум `[]`. `properties` — объект (не `null`);
+  минимум `{}`.
+- Семантика полей карточки **не** дублируется в hub и в
+  `repository-enumeration/*` — только ссылки на эту спеку.
 
 ## Не описывать здесь
 
@@ -136,3 +151,4 @@ Git Herder. Два репозитория с разными `uid` **не** сч�
 [scm-repository-selection]: scm-repository-selection.md
 [scm-repository-selection-qt]: scm-repository-selection.md#qt-теги
 [scm-repository-selection-qa]: scm-repository-selection.md#qa-атрибуты
+[cli-on-error]: ../cli/index.md#повторы-и---on-error

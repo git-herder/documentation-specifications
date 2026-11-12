@@ -89,6 +89,7 @@ current = min(page × per_page, X-Total)
 | `name`        | `name`                | Значение поля `name` из API как UTF-8 string                                                                                                                                    |
 | `path`        | `path_with_namespace` | Значение карточки `path` = `path_with_namespace` **без последнего** сегмента (slug/path проекта); сегменты через `/`. Если в `path_with_namespace` один сегмент — `path` = `""` |
 | `description` | `description`         | Если в API null или поле отсутствует — `""`                                                                                                                                     |
+| `url`         | `web_url`             | Значение как UTF-8 string. Пустое, null или отсутствие — [карточка § url](../../platform/scm-repository-card.md#url)                                                            |
 | `labels`      | `topics`              | Каждый элемент `topics` → одна строка в `labels`; нет `topics` или пустой массив — `[]`. При резолве `qt` итоговое `labels` задаёт [enrichment/qt.md](repository-enrichment/qt.md) (не смешивать с topics). Без `qt` — только из `topics`, как выше. |
 | `properties`  | —                     | Из ответа list — `{}`. Наполнение — [enrichment/qa.md](repository-enrichment/qa.md)                                                 |
 

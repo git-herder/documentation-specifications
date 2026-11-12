@@ -59,7 +59,9 @@ specifications/
 | SCM-отбор, enrichment GitHub (реестр) | [scm/github/repository-enrichment/index.md](scm/github/repository-enrichment/index.md) | актуально |
 | SCM-отбор, enrichment GitLab (реестр) | [scm/gitlab/repository-enrichment/index.md](scm/gitlab/repository-enrichment/index.md) | актуально |
 | SCM-отбор, base enumeration GitHub | [scm/github/base-enumeration.md](scm/github/base-enumeration.md) | актуально |
-| SCM-отбор, base enumeration GitLab | [scm/gitlab/base-enumeration.md](scm/gitlab/base-enumeration.md) | каркас |
+| SCM-отбор, base enumeration GitLab | [scm/gitlab/base-enumeration.md](scm/gitlab/base-enumeration.md) | актуально |
+| SCM-отбор, scm-search GitHub | [scm/github/repository-listing/scm-search.md](scm/github/repository-listing/scm-search.md) | актуально |
+| SCM-отбор, scm-search GitLab | [scm/gitlab/repository-listing/scm-search.md](scm/gitlab/repository-listing/scm-search.md) | актуально |
 | SCM-отбор, клиентская фильтрация GitHub (реестр) | [scm/github/repository-enumeration/index.md](scm/github/repository-enumeration/index.md) | актуально |
 | SCM-отбор, клиентская фильтрация GitLab (реестр) | [scm/gitlab/repository-enumeration/index.md](scm/gitlab/repository-enumeration/index.md) | актуально |
 | Контракт команды `profile` | [cli/profile/index.md](cli/profile/index.md) | актуально |

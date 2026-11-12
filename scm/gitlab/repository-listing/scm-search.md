@@ -73,9 +73,9 @@ Upstream Search API: [GitLab Search API](https://docs.gitlab.com/api/search/).
 При `scope=projects` каждый элемент ответа — объект проекта (см. Search API).
 
 Для **каждого** элемента **наполняет** карточку по
-[base-enumeration § карточка][base-enumeration-card]. Поле
-`labels` — из `topics` ответа; `properties` = `{}` (ветка `scm-search` не использует
-[enrichment/qa.md](../repository-enrichment/qa.md)).
+[base-enumeration § карточка][base-enumeration-card], включая `url` из `web_url`.
+Поле `labels` — из `topics` ответа; `properties` = `{}` (ветка `scm-search` не
+использует [enrichment/qa.md](../repository-enrichment/qa.md)).
 
 ## Ошибки HTTP
 

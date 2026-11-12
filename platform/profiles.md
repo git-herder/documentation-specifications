@@ -76,6 +76,9 @@ clone:
 publish:
   workspace: ~/code/fy/pool/day/qwer/rtyu/iop
   upstream-group: qwer/rtyu/iop
+report:
+  output: ./githerd-report.json
+  force: false
 ```
 
 Что означают ключи, которых нет в [таблице глобальных флагов](../cli/index.md)

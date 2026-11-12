@@ -111,11 +111,13 @@ View **SCM Listing**, view **SCM Enrichment** и процесс `id-649305ae`
 
 ## Ветка `--scm-search`
 
-Отдельный контур hub: один запрос листинга по
-[repository-listing/scm-search.md][scm-search] (GitLab;
-у GitHub — свой файл при появлении), **без** переносимых `--q*` и без
-продуктового `scope` на запрос. Полный алгоритм выше относится к режиму
-`--q*`.
+Отдельный контур hub: один запрос листинга, **без** переносимых `--q*` и без
+продуктового `scope` на запрос. Полный алгоритм выше относится к режиму `--q*`.
+
+| `upstream` | Контракт argv и HTTP |
+| ---------- | -------------------- |
+| `github` | [repository-listing/scm-search.md][scm-search-github] |
+| `gitlab` | [repository-listing/scm-search.md][scm-search-gitlab] |
 
 ## Не здесь
 
@@ -135,7 +137,8 @@ View **SCM Listing**, view **SCM Enrichment** и процесс `id-649305ae`
 [enrichment-github]: github/repository-enrichment/index.md
 [enrichment-gitlab]: gitlab/repository-enrichment/index.md
 [base-enumeration-github]: github/base-enumeration.md
-[scm-search]: gitlab/repository-listing/scm-search.md
+[scm-search-github]: github/repository-listing/scm-search.md
+[scm-search-gitlab]: gitlab/repository-listing/scm-search.md
 [repository-selection]: ../../product-intent/capability/platform/repository-selection.md
 [arch-readme]: ../../architecture/README.md
 [archimate]: ../../architecture/git-herder.archimate

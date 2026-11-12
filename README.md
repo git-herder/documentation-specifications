@@ -52,6 +52,8 @@ specifications/
 | SCM-отбор, options GitHub | [scm/github/repository-selection-options.md](scm/github/repository-selection-options.md) | актуально |
 | SCM-отбор, options GitLab | [scm/gitlab/repository-selection-options.md](scm/gitlab/repository-selection-options.md) | актуально |
 | Загрузка из SCM, обогащение карточек (оркестрация `id-649305ae`, трассировка ArchiMate SCM) | [scm/index.md](scm/index.md) | актуально |
+| Очередь повторов (`RetryingQueue`) | [platform/retrying-queue.md](platform/retrying-queue.md) | актуально |
+| HTTP-транспорт SCM, квота запросов | [platform/scm-http-transport.md](platform/scm-http-transport.md) | актуально |
 | SCM-отбор, listing GitHub (реестр) | [scm/github/repository-listing/index.md](scm/github/repository-listing/index.md) | актуально |
 | SCM-отбор, listing GitLab (реестр) | [scm/gitlab/repository-listing/index.md](scm/gitlab/repository-listing/index.md) | актуально |
 | SCM-отбор, enrichment GitHub (реестр) | [scm/github/repository-enrichment/index.md](scm/github/repository-enrichment/index.md) | актуально |

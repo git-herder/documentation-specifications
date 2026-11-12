@@ -1,13 +1,14 @@
 # Реестр обогащения карточек (GitLab)
 
 HTTP-дозагрузки полей [карточки][scm-repository-card] после листинга.
-Оркестрация (очередь, прогресс) — [scm/index.md](../../index.md);
-листинг — [repository-listing/](../repository-listing/index.md).
+Оркестрация (порядок фаз, прогресс) — [scm/index.md][scm-index];
+листинг — [repository-listing/][listing-index].
 
-Контракт единицы «джоб обогащения» в очереди — отдельная будущая спека; здесь —
-когда джоб активен и что делает HTTP.
+Каждая строка реестра — одно задание обогащения. Здесь — когда оно активно и
+что делает HTTP. Пара «карточка × задание» и её повтор — [очередь
+повторов][queue].
 
-## Реестр джобов
+## Реестр заданий
 
 | Поле | Файл | Условие после резолва |
 | ---- | ---- | --------------------- |
@@ -16,3 +17,6 @@ HTTP-дозагрузки полей [карточки][scm-repository-card] п�
 
 <!-- LINKS -->
 [scm-repository-card]: ../../../platform/scm-repository-card.md
+[scm-index]: ../../index.md
+[queue]: ../../../platform/retrying-queue.md
+[listing-index]: ../repository-listing/index.md

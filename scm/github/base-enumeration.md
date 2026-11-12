@@ -70,24 +70,21 @@ GitHub для list использует **keyset-based** пагинацию че
 5. Пустая выборка: `items` отсутствует, пустой массив или `total_count` = `0` в теле
    первого ответа; дополнительные страницы не запрашиваются, если нет `rel="next"`.
 
-## Rate limit {#rate-limit}
+## Квота запросов {#rate-limit}
 
-В каждом ответе GitHub REST адаптер учитывает заголовки:
+В каждом ответе GitHub REST разбор квоты читает заголовки и записывает их в
+[HTTP-транспорт][transport]. Транспорт сам заголовки платформы не разбирает.
 
-| Заголовок | Семантика |
-| --------- | --------- |
-| `X-Ratelimit-Limit` | Лимит запросов в текущем окне (целое) |
-| `X-Ratelimit-Remaining` | Оставшиеся запросы в окне (целое) |
-| `X-Ratelimit-Used` | Уже использовано в окне (целое) |
-| `X-Ratelimit-Reset` | Epoch (секунды), момент сброса текущего окна |
+| Заголовок | Значение транспорта |
+| --------- | ------------------- |
+| `X-Ratelimit-Limit` | Предел, целое |
+| `X-Ratelimit-Remaining` | Остаток, целое |
+| `X-Ratelimit-Used` | Израсходовано, целое |
+| `X-Ratelimit-Reset` | Момент сброса: epoch в секундах **плюс 1 с** |
 
-При `X-Ratelimit-Remaining` = `0` после очередного ответа:
-
-1. Если после резолва [on-limit-exceeded][options-on-limit-exceeded] = `await` (default):
-   вывести на консоль предупреждение о достижении лимита и ожидании до
-   `X-Ratelimit-Reset`; ждать до момента `X-Ratelimit-Reset` + 1 с, затем продолжить
-   list.
-2. Если `abort` — только [options § on-limit-exceeded][options-on-limit-exceeded].
+Удержание вызова и отказ от запроса — [транспорт][transport]. Какую политику
+передать экземпляру и какой текст показать перед ожиданием —
+[on-limit-exceeded][options-on-limit-exceeded].
 
 ## Карточка репозитория {#карточка-репозитория}
 
@@ -136,5 +133,6 @@ GitHub для list использует **keyset-based** пагинацию че
 [enumeration-scope]: repository-enumeration/index.md#назначение-каталога
 [github-options]: repository-selection-options.md
 [options-on-limit-exceeded]: repository-selection-options.md#on-limit-exceeded
+[transport]: ../../platform/scm-http-transport.md
 [github-pagination-link]: https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api?apiVersion=2026-03-10#using-link-headers
 [github-search-repositories]: https://docs.github.com/en/rest/search/search?apiVersion=2026-03-10#search-repositories

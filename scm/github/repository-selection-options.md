@@ -17,8 +17,9 @@ Extension-флаги SCM-отбора, имеющие смысл **только*
 
 #### Роль
 
-Модификатор pipeline list ([base-enumeration § rate limit][base-enumeration-rate-limit]);
-**не** считается критерием «задан хотя бы один» ([hub][scm-repository-selection]).
+Модификатор квоты общего [HTTP-транспорта][transport] при `upstream=github`
+([соответствие заголовков][base-enumeration-rate-limit]).
+Не считается критерием «задан хотя бы один» ([hub][scm-repository-selection]).
 
 #### Допустимые значения
 
@@ -27,16 +28,15 @@ Extension-флаги SCM-отбора, имеющие смысл **только*
 
 #### Продуктовый эффект
 
-| После резолва   | Эффект при `X-Ratelimit-Remaining` = `0` |
-| --------------- | ---------------------------------------- |
-| `await` (default) | Предупреждение на консоль; ожидание до `X-Ratelimit-Reset` + 1 с; затем продолжение list ([base-enumeration][base-enumeration-rate-limit]). |
-| `abort`         | Сообщение об ошибке; **без** ожидания; команда завершается с exit `1`. |
+| После резолва | Эффект при нулевом остатке |
+| ------------- | -------------------------- |
+| `await` (по умолчанию) | Предупреждение на консоль о достижении квоты и ожидании до момента сброса; транспорт удерживает вызов. Момент сброса — [квота GitHub][base-enumeration-rate-limit]. |
+| `abort` | Сообщение об ошибке; запрос не выполняется; команда завершается с exit `1`. |
 
 #### Область (продукт)
 
-Режим **`--q*`**: применяется к запросам базового list
-`GET /search/repositories` и связанным HTTP-шагам того же отбора, где адаптер
-обрабатывает rate limit GitHub REST.
+Режим **`--q*`**: политика общего экземпляра транспорта на все HTTP-запросы
+этого отбора (перечисление и обогащение), не только базовый list.
 
 #### Профиль
 
@@ -69,6 +69,8 @@ hub); см. [listing/index.md](repository-listing/index.md).
 - Листинг и обогащение — [listing/](repository-listing/index.md),
   [enrichment/](repository-enrichment/index.md) и [base-enumeration.md](base-enumeration.md).
 - Клиентская фильтрация — [repository-enumeration/](repository-enumeration/index.md).
+- Удержание вызова, отказ от запроса и хранение квоты —
+  [HTTP-транспорт][transport]. Текст предупреждения — в этом файле.
 
 <!-- LINKS -->
 [scm-repository-selection]: ../../platform/scm-repository-selection.md
@@ -77,3 +79,4 @@ hub); см. [listing/index.md](repository-listing/index.md).
 [profiles]: ../../platform/profiles.md
 [adr-hub-extension]: ../../../../ADR/ADR-26102201-scm-selection-hub-extension-specs.md
 [base-enumeration-rate-limit]: base-enumeration.md#rate-limit
+[transport]: ../../platform/scm-http-transport.md

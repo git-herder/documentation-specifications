@@ -124,8 +124,8 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 
 ### `--retries-number`
 
-Один флаг на весь CLI. Что считать одной попыткой (репозиторий, копия, сетевой
-шаг) — в спеке **конкретной** команды.
+Один флаг на весь CLI. Что считать одним объектом при загрузке из SCM —
+[очередь повторов][retrying-queue]. Для прочих команд — в спеке команды.
 
 `N` — значение флага. При ошибке на объекте:
 
@@ -141,8 +141,8 @@ TSV (колонки и правила — [platform/logging.md](../platform/logg
 ```
 
 Сетевые повторы в массовых операциях — см.
-[отказоустойчивое выполнение](../../product-intent/capability/platform/resilient-network-execution.md); детали — в спеке
-команды.
+[отказоустойчивое выполнение][resilient-network].
+Поведение очереди — [очередь повторов][retrying-queue].
 
 ### `--on-error`
 
@@ -258,3 +258,7 @@ argv (если флаг задан)  >  узлы профиля  >  builtin defa
 - [Профили (capability)](../../product-intent/capability/platform/profiles.md)
 - [Профили и резолв (спека)](../platform/profiles.md)
 - [ADR-26101701](../../../ADR/ADR-26101701-go-application-stack.md) — Cobra, slog, pterm
+
+<!-- LINKS -->
+[retrying-queue]: ../platform/retrying-queue.md
+[resilient-network]: ../../product-intent/capability/platform/resilient-network-execution.md

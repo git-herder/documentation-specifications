@@ -29,7 +29,7 @@
 
 → в `q`: `org:jopos+user:jopos+org:cragent+user:cragent`
 
-→ `GET /search/repositories?q=…` (значение в URL кодируем).
+→ `GET /search/repositories?q=org:jopos+user:jopos+org:cragent+user:cragent`
 
 ## Не в этом файле
 

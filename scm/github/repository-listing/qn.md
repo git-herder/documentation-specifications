@@ -27,7 +27,7 @@
 
 → в `q`: `code2+archi`
 
-→ `GET /search/repositories?q=code2+archi` (в URL кодируем).
+→ `GET /search/repositories?q=code2+archi`
 
 ## Не в этом файле
 

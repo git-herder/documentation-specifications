@@ -48,7 +48,7 @@ Upstream Search API: [Search repositories][github-search-repositories].
 
 1. Проверяет пару `q` (см. выше).
 2. **Склеивает** все пары в одну query-строку для GET: `key1=val1&key2=val2&…`,
-   **кодирует** имена и значения для HTTP так же, как для query list.
+   без percent-encoding, как [сборку `q`][listing-q-build].
 3. К каждой странице добавляет `page` и `per_page` (размер страницы — как у
    [базового list][base-enumeration], здесь не дублируется).
 

@@ -66,6 +66,8 @@ specifications/
 | SCM-отбор, клиентская фильтрация GitLab (реестр) | [scm/gitlab/repository-enumeration/index.md](scm/gitlab/repository-enumeration/index.md) | актуально |
 | Контракт команды `profile` | [cli/profile/index.md](cli/profile/index.md) | актуально |
 | Контракт команды `report` | [cli/report/index.md](cli/report/index.md) | актуально |
+| Контракт команды `clone` | [cli/clone/index.md](cli/clone/index.md) | актуально |
+| Интерактивный отбор списка | [platform/interactive-selection.md](platform/interactive-selection.md) | актуально |
 
 Не дублируйте таблицы глобальных флагов и инварианты платформы вне SSOT —
 ссылайтесь на строку таблицы выше.

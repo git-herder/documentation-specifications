@@ -55,6 +55,23 @@
    `--interactive` задан, а стандартный ввод или вывод — не терминал,
    команда завершается с кодом `1` и список не возвращает.
 
+```mermaid
+flowchart TD
+  walk[Обход корня]
+  match["Фильтр qp и qn"]
+  keep[Колбэк по одной копии]
+  interactive[console.Select]
+  done[Список в порядке обнаружения]
+  walk --> match --> keep
+  keep -->|false| keep
+  keep -->|ошибка| fail1[Ошибка вызова]
+  keep -->|interactive и список не пуст| interactive
+  keep -->|иначе| done
+  interactive -->|Enter| done
+  interactive -->|ESC| cancel[ErrCancelled]
+  interactive -->|не терминал| fail1
+```
+
 ## Результат
 
 Список копий, прошедших все заданные шаги, в порядке обнаружения. Команда

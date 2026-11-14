@@ -60,6 +60,8 @@ specifications/
 | SCM-отбор, enrichment GitLab (реестр) | [scm/gitlab/repository-enrichment/index.md](scm/gitlab/repository-enrichment/index.md) | актуально |
 | SCM-отбор, base enumeration GitHub | [scm/github/base-enumeration.md](scm/github/base-enumeration.md) | актуально |
 | SCM-отбор, base enumeration GitLab | [scm/gitlab/base-enumeration.md](scm/gitlab/base-enumeration.md) | актуально |
+| Управление репозиториями GitHub (`GithubRepositoryManagement`) | [scm/github/repository-management.md](scm/github/repository-management.md) | актуально |
+| Управление репозиториями GitLab (`GitlabRepositoryManagement`) | [scm/gitlab/repository-management.md](scm/gitlab/repository-management.md) | актуально |
 | SCM-отбор, scm-search GitHub | [scm/github/repository-listing/scm-search.md](scm/github/repository-listing/scm-search.md) | актуально |
 | SCM-отбор, scm-search GitLab | [scm/gitlab/repository-listing/scm-search.md](scm/gitlab/repository-listing/scm-search.md) | актуально |
 | SCM-отбор, клиентская фильтрация GitHub (реестр) | [scm/github/repository-enumeration/index.md](scm/github/repository-enumeration/index.md) | актуально |

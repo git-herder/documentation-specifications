@@ -63,14 +63,14 @@
 - **Подкоманды** — вложенные блоки под родительской командой; правила те же.
 
 Имена ключей — как длинные флаги **без** `--`: `retries-number`, `on-error`, `workspace`,
-`upstream-group` и т.д.
+`root` и т.д.
 
 ### Пример
 
 ```yaml
 root:
   upstream: github
-  host: github.com
+  host: api.github.com
   token: "<pat>"
   retries-number: 7
   workspace: ~/code/fy/pool/day
@@ -79,14 +79,14 @@ clone:
   on-error: continue
 publish:
   workspace: ~/code/fy/pool/day/qwer/rtyu/iop
-  upstream-group: qwer/rtyu/iop
+  root: qwer/rtyu/iop
 report:
   output: ./githerd-report.json
   force: false
 ```
 
 Что означают ключи, которых нет в [таблице глобальных флагов](../cli/index.md)
-(например `upstream-group`), — в спеках **конкретных** команд. Критерии SCM-отбора
+(например `root`), — в спеках **конкретных** команд. Критерии SCM-отбора
 (`qp`, `qn`, `qt`, `qa`, `scm-search`, `scope`; GitLab — `include-inactive` в
 [extension](../scm/gitlab/repository-selection-options.md)) —
 [scm-repository-selection.md](scm-repository-selection.md).
@@ -97,8 +97,8 @@ report:
 | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `verbose`, `help`, `version`, `profile` на любом уровне    | **Пропускает** (на итоговые значения не влияет)                                           |
 | `debug`                                                    | Можно в `root` и в блоках команд; участвует в [выборе значения](#порядок-выбора-значения) |
-| `upstream`, `host`, `token`                                | Только в блоке `root`                                                                     |
-| `upstream`, `host`, `token` в блоке команды или подкоманды | **Ошибка настроек**, код `1`                                                              |
+| `upstream`, `host`, `token`, `git-https-token`             | Только в блоке `root`                                                                     |
+| `upstream`, `host`, `token`, `git-https-token` в блоке команды или подкоманды | **Ошибка настроек**, код `1`                                                 |
 | Неизвестный ключ                                           | **Пропускает** (не ошибка)                                                                |
 
 ## Порядок выбора значения
@@ -181,5 +181,6 @@ flowchart TD
 
 - CLI управления профилями (`list`, `use`, `create`, `drop`, `edit`) — [команда `profile`](../cli/profile/index.md).
 - Проверка профиля на SCM (отдельная команда, когда появится).
-- Смысл SCM-отбора — [scm-repository-selection.md](scm-repository-selection.md); прочих параметров команд (`upstream-group` и т.п.) — в спеках команд.
+- Смысл SCM-отбора — [scm-repository-selection.md](scm-repository-selection.md);
+  прочих параметров команд (`root` и т.п.) — в спеках команд.
 - Код в `application/` (в том числе Viper).

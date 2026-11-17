@@ -70,6 +70,7 @@ specifications/
 | Контракт команды `report` | [cli/report/index.md](cli/report/index.md) | актуально |
 | Контракт команды `clone` | [cli/clone/index.md](cli/clone/index.md) | актуально |
 | Контракт команды `publish` | [cli/publish/index.md](cli/publish/index.md) | актуально |
+| Контракт команды `sync` | [cli/sync/index.md](cli/sync/index.md) | актуально |
 | Интерактивный отбор списка | [platform/interactive-selection.md](platform/interactive-selection.md) | актуально |
 | Порог подтверждения массовой операции | [platform/mass-confirm.md](platform/mass-confirm.md) | актуально |
 | Поиск рабочих копий (`GitWorkingCopiesResolver`) | [platform/git-working-copies-resolver.md](platform/git-working-copies-resolver.md) | актуально |

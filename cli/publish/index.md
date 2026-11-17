@@ -125,7 +125,12 @@ githerd [глобальные опции] publish <root> [опции publish]
 Строка [итога][result] для объекта очереди печатается один раз, когда
 очередь закончила объект. Пока есть следующая попытка, строку не пишут.
 Stdout и stderr процесса `git` на консоль не попадают: текст пишется в
-[журнал прогона][logging].
+[журнал прогона][logging]. На время долгого шага видна
+[строка хода][git-step]. Шаг `remote` — пока выполняется переименование
+или создание ремота. Если ремот уже совпал и процесс `git` не
+запускается, строки `remote` нет. На каждую отправку шаг — `push` и имя
+ветки. Создание репозитория через API в эту строку не входит. Метка —
+путь из [итога][result].
 
 ### Привязка ремота
 
@@ -266,6 +271,7 @@ GitHub][github-mgmt]. `path` карточки — сегмент владель�
   [управление репозиториями GitHub][github-mgmt].
 - Таблица преобразования `--protocol` — [адрес клонирования][clone-url].
 - Правило порога, вопрос и отказ — [порог подтверждения][mass-confirm].
+- Формат строки хода долгого шага `git` — [ход шага][git-step].
 - Код в `application/`.
 
 <!-- LINKS -->
@@ -291,6 +297,7 @@ GitHub][github-mgmt]. `path` карточки — сегмент владель�
 [mass-confirm]: ../../platform/mass-confirm.md
 [git-https]: ../index.md#--git-https-token
 [logging]: ../../platform/logging.md
+[git-step]: ../../platform/git-step-status.md
 [flow-head]: #поток-выполнения
 [publish]: ../../../product-intent/capability/local/publish-local-working-copies-to-scm.md
 [selection-cap]: ../../../product-intent/capability/platform/repository-selection.md

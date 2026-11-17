@@ -74,6 +74,7 @@ specifications/
 | Интерактивный отбор списка | [platform/interactive-selection.md](platform/interactive-selection.md) | актуально |
 | Порог подтверждения массовой операции | [platform/mass-confirm.md](platform/mass-confirm.md) | актуально |
 | Поиск рабочих копий (`GitWorkingCopiesResolver`) | [platform/git-working-copies-resolver.md](platform/git-working-copies-resolver.md) | актуально |
+| Ход долгого шага `git` (`sync`, `clone`, `publish`) | [platform/git-step-status.md](platform/git-step-status.md) | актуально |
 
 Не дублируйте таблицы глобальных флагов и инварианты платформы вне SSOT —
 ссылайтесь на строку таблицы выше.

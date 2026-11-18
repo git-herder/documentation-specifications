@@ -25,11 +25,14 @@ githerd remote -v
 githerd remote -- -v
 githerd remote add -t main origin git@github.com:org/billing.git
 githerd remote set-url origin --push git@github.com:org/billing.git
+githerd remote add origin git@gitlab.example.com:group/{path}.git
+githerd remote set-url origin git@github.com:myorg/{name}.git
 ```
 
 Первая печатает версию. Вторая запускает `git remote -v`. Разбор
-`-v` — [префикс и хвост][proxy-prefix]. Имя команды называет
-`git remote`, а не [ремот][REMOTE-TERM].
+`-v` — [префикс и хвост][proxy-prefix]. Последние две раскрывают
+`{path}` и `{name}` по [подстановке в хвосте][proxy-subst]. Имя
+команды называет `git remote`, а не [ремот][REMOTE-TERM].
 
 ## Трассировка вверх
 
@@ -40,7 +43,8 @@ githerd remote set-url origin --push git@github.com:org/billing.git
 
 ## Не описывать здесь
 
-- Разбор префикса, запуск git и коды выхода — [общий контракт][proxy].
+- Разбор префикса, подстановка в хвосте, запуск git и коды выхода —
+  [общий контракт][proxy].
 - Код в `application/`.
 
 <!-- LINKS -->
@@ -49,6 +53,7 @@ githerd remote set-url origin --push git@github.com:org/billing.git
 [REMOTE-TERM]: ../../../../glossary/terms/remote.md
 [proxy]: ../../platform/proxy-command.md
 [proxy-prefix]: ../../platform/proxy-command.md#префикс-и-хвост
+[proxy-subst]: ../../platform/proxy-command.md#подстановка-в-хвосте
 [mass-ops]: ../../../product-intent/capability/local/mass-local-git-operations.md
 [bg-7]: ../../../product-intent/motivation/goals.md#bg-7
 [cli-index]: ../index.md

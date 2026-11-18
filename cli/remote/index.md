@@ -21,12 +21,14 @@ githerd [глобальные опции] remote [флаги префикса] [
 ## Примеры
 
 ```text
+githerd remote -v
 githerd remote -- -v
 githerd remote add -t main origin git@github.com:org/billing.git
 githerd remote set-url origin --push git@github.com:org/billing.git
 ```
 
-Разбор `-v` — [префикс и хвост][proxy-prefix]. Имя команды называет
+Первая печатает версию. Вторая запускает `git remote -v`. Разбор
+`-v` — [префикс и хвост][proxy-prefix]. Имя команды называет
 `git remote`, а не [ремот][REMOTE-TERM].
 
 ## Трассировка вверх

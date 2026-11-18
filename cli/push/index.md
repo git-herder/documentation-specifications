@@ -18,11 +18,13 @@ githerd [глобальные опции] push [флаги префикса] [х
 ## Примеры
 
 ```text
-githerd push -A --force-with-lease
+githerd push --all
 githerd push -- --all
+githerd push -A --force-with-lease
 ```
 
-Разбор флагов в этих примерах — [префикс и хвост][proxy-prefix].
+Первая печатает пояснение и вызывает `git push` без `--all`.
+Вторая передаёт git `--all`. Разбор — [префикс и хвост][proxy-prefix].
 
 ## Трассировка вверх
 

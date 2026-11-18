@@ -18,11 +18,14 @@ githerd [глобальные опции] fetch [флаги префикса] [�
 ## Примеры
 
 ```text
-githerd fetch --prune
+githerd fetch --all
 githerd fetch -A -- --all --prune
+githerd fetch --prune
 ```
 
-Разбор флагов в этих примерах — [префикс и хвост][proxy-prefix].
+Первая печатает пояснение и вызывает `git fetch` без `--all`.
+Вторая передаёт git `--all`. Третья передаёт `--prune`. Разбор —
+[префикс и хвост][proxy-prefix].
 
 ## Трассировка вверх
 

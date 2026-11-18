@@ -73,10 +73,15 @@ specifications/
 | Контракт команды `sync` | [cli/sync/index.md](cli/sync/index.md) | актуально |
 | Контракт команды `merge` | [cli/merge/index.md](cli/merge/index.md) | актуально |
 | Контракт команды `switch` | [cli/switch/index.md](cli/switch/index.md) | актуально |
+| Контракт прокси-команды: префикс, хвост, запуск | [platform/proxy-command.md](platform/proxy-command.md) | актуально |
+| Контракт команды `pull` | [cli/pull/index.md](cli/pull/index.md) | актуально |
+| Контракт команды `push` | [cli/push/index.md](cli/push/index.md) | актуально |
+| Контракт команды `fetch` | [cli/fetch/index.md](cli/fetch/index.md) | актуально |
+| Контракт команды `remote` | [cli/remote/index.md](cli/remote/index.md) | актуально |
 | Интерактивный отбор списка | [platform/interactive-selection.md](platform/interactive-selection.md) | актуально |
 | Порог подтверждения массовой операции | [platform/mass-confirm.md](platform/mass-confirm.md) | актуально |
 | Поиск рабочих копий (`GitWorkingCopiesResolver`) | [platform/git-working-copies-resolver.md](platform/git-working-copies-resolver.md) | актуально |
-| Ход долгого шага `git` (`sync`, `clone`, `publish`, `merge`, `switch`) | [platform/git-step-status.md](platform/git-step-status.md) | актуально |
+| Ход долгого шага `git` (`sync`, `clone`, `publish`, `merge`, `switch`, `pull`, `push`, `fetch`, `remote`) | [platform/git-step-status.md](platform/git-step-status.md) | актуально |
 
 Не дублируйте таблицы глобальных флагов и инварианты платформы вне SSOT —
 ссылайтесь на строку таблицы выше.
